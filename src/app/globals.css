@@ -8,12 +8,12 @@ body {
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
+    --background: 0 0% 98%;
+    --foreground: 240 10% 5%;
+    --card: 0 0% 98%;
+    --card-foreground: 240 10% 5%;
+    --popover: 0 0% 98%;
+    --popover-foreground: 240 10% 5%;
     --primary: 203 89% 53%;
     --primary-foreground: 0 0% 98%;
     --secondary: 240 4.8% 95.9%;
@@ -35,12 +35,12 @@ body {
     --radius: 0.5rem;
   }
   .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
+    --background: 240 10% 5%;
+    --foreground: 0 0% 96%;
+    --card: 240 10% 5%;
+    --card-foreground: 0 0% 96%;
+    --popover: 240 10% 5%;
+    --popover-foreground: 0 0% 96%;
     --primary: 203 89% 53%;
     --primary-foreground: 0 0% 98%;
     --secondary: 240 3.7% 15.9%;
