@@ -37,7 +37,7 @@ export const ModalSignupForm = ({ toggleMode }: { toggleMode: () => void }) => {
               <FormControl>
                 <Input
                   placeholder="Email"
-                  className="border-white/20 bg-transparent h-12 placeholder:text-white/40"
+                  className="dark:border-white/20 h-12 dark:placeholder:text-white/40"
                   {...field}
                 />
               </FormControl>
@@ -55,7 +55,7 @@ export const ModalSignupForm = ({ toggleMode }: { toggleMode: () => void }) => {
               <FormControl>
                 <Input
                   placeholder="Username"
-                  className="border-white/20 bg-transparent h-12 placeholder:text-white/40"
+                  className="dark:border-white/20 h-12 dark:placeholder:text-white/40"
                   {...field}
                 />
               </FormControl>
@@ -73,7 +73,7 @@ export const ModalSignupForm = ({ toggleMode }: { toggleMode: () => void }) => {
               <FormLabel>Password</FormLabel>
               <FormControl>
                 <PasswordInput
-                  className="border-white/20 bg-transparent h-12 placeholder:text-white/40"
+                  className="dark:border-white/20 h-12 dark:placeholder:text-white/40"
                   placeholder="Password"
                   {...field}
                 />
@@ -86,13 +86,13 @@ export const ModalSignupForm = ({ toggleMode }: { toggleMode: () => void }) => {
         <div className="mt-2">
           <Button
             type="submit"
-            className="bg-white hover:bg-white/90 !mt-2 rounded-full w-full h-9 font-bold text-black"
+            className="bg-foreground hover:bg-foreground/90 mt-2 w-full font-bold text-background"
           >
             Create account
           </Button>
         </div>
       </form>
-      <p className="space-x-1 pt-4 text-sm text-white/60">
+      <p className="space-x-1 pt-4 text-foreground/90 text-sm">
         <span>Already have an account?</span>
         <button onClick={toggleMode} className="text-blue-500 hover:underline">
           Sign in

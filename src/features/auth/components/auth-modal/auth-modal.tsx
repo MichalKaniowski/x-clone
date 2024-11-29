@@ -30,22 +30,19 @@ export const AuthModal = ({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         {initialIsSignup ? (
-          <Button
-            size="lg"
-            className="px-4 py-2 rounded-full w-full font-semibold transition-colors"
-          >
+          <Button size="lg" className="w-full font-semibold">
             Create account
           </Button>
         ) : (
           <Button
             variant="outline"
-            className="border-gray-700 hover:bg-[#031018] px-4 py-2 border rounded-full w-full max-w-sm font-medium text-primary hover:text-primary/80 transition-colors"
+            className="border-gray-700 hover:bg-[#f3f3f3] dark:hover:bg-[#031018] border rounded-full w-full max-w-sm font-medium text-primary hover:text-primary/80"
           >
             Sign in
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="border-white/10 bg-black sm:max-w-[400px] text-white">
+      <DialogContent className="border-foreground/10 sm:max-w-[400px] text-white">
         <DialogHeader className="relative">
           <div className="flex justify-center mb-6">
             <Logo />
@@ -59,13 +56,10 @@ export const AuthModal = ({
             text={isSignUp ? "Sign up with Google" : "Sign in with Google"}
           />
 
-          <div className="relative my-4">
-            <div className="absolute inset-0 flex items-center">
-              <span className="border-white/20 border-t w-full" />
-            </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-black px-2 text-white/60">or</span>
-            </div>
+          <div className="flex items-center my-4">
+            <div className="flex-1 border-gray-700 border-t"></div>
+            <span className="px-4 text-foreground">or</span>
+            <div className="flex-1 border-gray-700 border-t"></div>
           </div>
 
           {isSignUp ? (
