@@ -1,6 +1,7 @@
 import { ThemeProvider } from "@/components/theme-provider";
 import type { Metadata } from "next";
 import { Work_Sans } from "next/font/google";
+import { Toaster } from "sonner";
 import "./globals.css";
 
 const workSans = Work_Sans({ subsets: ["latin"] });
@@ -18,6 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${workSans.className} antialiased`}>
+        <Toaster />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
