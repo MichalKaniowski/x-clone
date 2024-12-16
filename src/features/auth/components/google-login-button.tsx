@@ -34,6 +34,7 @@ export const GoogleLoginButton = ({ text }: { text: string }) => {
     <Button
       size="lg"
       className="bg-foreground hover:bg-foreground/90 mb-1 w-full font-semibold text-[15px] text-background"
+      asChild
     >
       <a
         href="/login/google"
