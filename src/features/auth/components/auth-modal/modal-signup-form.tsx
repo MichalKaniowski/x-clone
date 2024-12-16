@@ -18,6 +18,11 @@ import { PasswordInput } from "../password-input";
 export const ModalSignupForm = ({ toggleMode }: { toggleMode: () => void }) => {
   const form = useForm<SignUpValues>({
     resolver: zodResolver(signUpSchema),
+    defaultValues: {
+      email: "",
+      username: "",
+      password: "",
+    },
   });
 
   async function onSubmit(values: SignUpValues) {

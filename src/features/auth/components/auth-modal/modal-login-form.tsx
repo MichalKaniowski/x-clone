@@ -18,6 +18,10 @@ import { PasswordInput } from "../password-input";
 export const ModalLoginForm = ({ toggleMode }: { toggleMode: () => void }) => {
   const form = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
+    defaultValues: {
+      username: "",
+      password: "",
+    },
   });
 
   const onSubmit = async (values: LoginValues) => {
