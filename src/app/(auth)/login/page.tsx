@@ -1,10 +1,10 @@
 import { Logo } from "@/components/logo";
-import { AuthModal } from "./auth-modal/auth-modal";
-import { GoogleLoginButton } from "./google-login-button";
+import { AuthModal } from "@/features/auth/components/auth-modal/auth-modal";
+import { GoogleLoginButton } from "@/features/auth/components/google-login-button";
 
-export const AuthScreen = () => {
+export default function LoginPage() {
   return (
-    <div className="flex mx-auto max-w-7xl min-h-screen">
+    <div className="flex w-full h-full">
       <div className="flex flex-1 justify-center items-center">
         <Logo className="w-[320px] h-[320px]" />
       </div>
@@ -34,4 +34,4 @@ export const AuthScreen = () => {
       </div>
     </div>
   );
-};
+}

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/primitives/button";
 
-export const GoogleIcon = () => {
+const GoogleIcon = () => {
   return (
     <svg
       viewBox="0 0 24 24"
