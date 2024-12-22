@@ -1,12 +1,11 @@
 "use server";
 
 import ResetPasswordEmail from "@/emails/reset-password-email";
-import { forgotPasswordSchema, ForgotPasswordValues } from "../validation";
-
 import prisma from "@/lib/prisma";
 import { render } from "@react-email/components";
 import sendgrid from "@sendgrid/mail";
 import React from "react";
+import { forgotPasswordSchema, ForgotPasswordValues } from "../validation";
 
 sendgrid.setApiKey(process.env.SENDGRID_API_KEY || "");
 
