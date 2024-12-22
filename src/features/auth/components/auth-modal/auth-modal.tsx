@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/primitives/dialog";
 import { useState } from "react";
 import { GoogleLoginButton } from "../google-login-button";
-import { ModalLoginForm } from "./modal-login-form";
+import { ModalLoginForm } from "./modal-login-form/modal-login-form";
 import { ModalSignupForm } from "./modal-signup-form";
 
 export const AuthModal = ({

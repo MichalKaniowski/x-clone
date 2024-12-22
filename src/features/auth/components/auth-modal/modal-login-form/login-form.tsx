@@ -8,14 +8,22 @@ import {
   FormMessage,
 } from "@/components/ui/primitives/form";
 import { Input } from "@/components/ui/primitives/input";
+import { login } from "@/features/auth/actions/login";
+import { loginSchema, LoginValues } from "@/features/auth/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { login } from "../../actions/login";
-import { loginSchema, LoginValues } from "../../validation";
-import { PasswordInput } from "../password-input";
+import { PasswordInput } from "../../password-input";
 
-export const ModalLoginForm = ({ toggleMode }: { toggleMode: () => void }) => {
+interface LoginFormProps {
+  toggleSignupMode: () => void;
+  onTurnPasswordModeOn: () => void;
+}
+
+export const LoginForm = ({
+  toggleSignupMode,
+  onTurnPasswordModeOn,
+}: LoginFormProps) => {
   const form = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -80,6 +88,7 @@ export const ModalLoginForm = ({ toggleMode }: { toggleMode: () => void }) => {
         </div>
       </form>
       <Button
+        onClick={onTurnPasswordModeOn}
         variant="outline"
         className="border-foreground/20 hover:bg-foreground/10 w-full text-foreground"
       >
@@ -87,7 +96,10 @@ export const ModalLoginForm = ({ toggleMode }: { toggleMode: () => void }) => {
       </Button>
       <p className="space-x-1 pt-4 text-foreground/90 text-sm">
         <span>Don&apos;t have an account?</span>
-        <button onClick={toggleMode} className="text-blue-500 hover:underline">
+        <button
+          onClick={toggleSignupMode}
+          className="text-blue-500 hover:underline"
+        >
           Sign up
         </button>
       </p>

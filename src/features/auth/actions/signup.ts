@@ -1,24 +1,21 @@
 "use server";
+
 import { lucia } from "@/auth";
 import prisma from "@/lib/prisma";
-import { hash } from "@node-rs/argon2";
 import { generateIdFromEntropySize } from "lucia";
 import { isRedirectError } from "next/dist/client/components/redirect";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { signUpSchema, SignUpValues } from "../validation";
+import { getHashedPassword } from "./get-hashed-password";
 
 export async function signUp(
   credentials: SignUpValues
 ): Promise<{ error: string }> {
   try {
     const { username, email, password } = signUpSchema.parse(credentials);
-    const passwordHash = await hash(password, {
-      memoryCost: 19456,
-      timeCost: 2,
-      outputLen: 32,
-      parallelism: 1,
-    });
+
+    const passwordHash = await getHashedPassword(password);
 
     const existingUsername = await prisma.user.findFirst({
       where: {
