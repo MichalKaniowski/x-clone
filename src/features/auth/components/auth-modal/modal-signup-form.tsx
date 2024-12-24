@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/primitives/button";
+import { LoadingButton } from "@/components/ui/loading-button";
 import {
   Form,
   FormControl,
@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/primitives/form";
 import { Input } from "@/components/ui/primitives/input";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { signUp } from "../../actions/signup";
@@ -24,9 +25,13 @@ export const ModalSignupForm = ({ toggleMode }: { toggleMode: () => void }) => {
       password: "",
     },
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   async function onSubmit(values: SignUpValues) {
+    setIsLoading(true);
     const { error } = await signUp(values);
+    setIsLoading(false);
+
     if (error) toast.error(error);
   }
 
@@ -89,12 +94,13 @@ export const ModalSignupForm = ({ toggleMode }: { toggleMode: () => void }) => {
           )}
         />
         <div className="mt-2">
-          <Button
+          <LoadingButton
             type="submit"
             className="bg-foreground hover:bg-foreground/90 mt-2 w-full font-bold text-background"
+            loading={isLoading}
           >
             Create account
-          </Button>
+          </LoadingButton>
         </div>
       </form>
       <p className="space-x-1 pt-4 text-foreground/90 text-sm">

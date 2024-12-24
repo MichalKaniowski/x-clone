@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/primitives/button";
+import { LoadingButton } from "@/components/ui/loading-button";
 import {
   Form,
   FormControl,
@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/primitives/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { resetPassword } from "../actions/reset-password";
@@ -25,12 +26,16 @@ export const ResetPasswordForm = () => {
       confirmNewPassword: "",
     },
   });
+  const [isLoading, setIsLoading] = useState(false);
+
   const searchParams = useSearchParams();
   const router = useRouter();
 
   const onSubmit = async (values: ResetPasswordValues) => {
+    setIsLoading(true);
     const token = searchParams.get("token");
     if (!token) {
+      setIsLoading(false);
       return toast.error("Unauthorized");
     }
 
@@ -89,12 +94,13 @@ export const ResetPasswordForm = () => {
             )}
           />
           <div className="mt-2">
-            <Button
+            <LoadingButton
               type="submit"
               className="bg-foreground hover:bg-foreground/90 mt-2 w-full font-bold text-background"
+              loading={isLoading}
             >
               Reset password
-            </Button>
+            </LoadingButton>
           </div>
         </form>
       </Form>

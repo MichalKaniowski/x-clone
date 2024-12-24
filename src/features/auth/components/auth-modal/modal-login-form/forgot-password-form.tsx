@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/primitives/button";
+import { LoadingButton } from "@/components/ui/loading-button";
 import {
   Form,
   FormControl,
@@ -16,6 +16,7 @@ import {
 } from "@/features/auth/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { MoveLeft } from "lucide-react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -32,19 +33,27 @@ export const ForgotPasswordForm = ({
       email: "",
     },
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async (values: ForgotPasswordValues) => {
-    const doesAccountWithEmailExist = await doesAccountExist(values.email);
-    if (!doesAccountWithEmailExist)
-      return toast.error("Account with that email address doesn't exist.");
+    try {
+      setIsLoading(true);
 
-    const res = await sendResetPasswordEmail(values);
-    const error = res?.error;
-    if (error) return toast.error(error);
+      const doesAccountWithEmailExist = await doesAccountExist(values.email);
+      if (!doesAccountWithEmailExist)
+        return toast.error("Account with that email address doesn't exist.");
 
-    toast.success(
-      "Email with reset password link has been sent successfully. Check your inbox and spam folder."
-    );
+      const res = await sendResetPasswordEmail(values);
+
+      const error = res?.error;
+      if (error) return toast.error(error);
+
+      toast.success(
+        "Email with reset password link has been sent successfully. Check your inbox and spam folder."
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -70,12 +79,13 @@ export const ForgotPasswordForm = ({
             )}
           />
 
-          <Button
+          <LoadingButton
             type="submit"
             className="bg-foreground hover:bg-foreground/90 mt-2 w-full font-bold text-background"
+            loading={isLoading}
           >
             Reset password
-          </Button>
+          </LoadingButton>
         </form>
       </Form>
       <button

@@ -1,3 +1,4 @@
+import { LoadingButton } from "@/components/ui/loading-button";
 import { Button } from "@/components/ui/primitives/button";
 import {
   Form,
@@ -11,6 +12,7 @@ import { Input } from "@/components/ui/primitives/input";
 import { login } from "@/features/auth/actions/login";
 import { loginSchema, LoginValues } from "@/features/auth/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { PasswordInput } from "../../password-input";
@@ -31,9 +33,12 @@ export const LoginForm = ({
       password: "",
     },
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async (values: LoginValues) => {
+    setIsLoading(true);
     const { error } = await login(values);
+    setIsLoading(false);
 
     if (error) toast.error(error);
   };
@@ -79,12 +84,13 @@ export const LoginForm = ({
           )}
         />
         <div className="mt-2">
-          <Button
+          <LoadingButton
             type="submit"
             className="bg-foreground hover:bg-foreground/90 mt-2 w-full font-bold text-background"
+            loading={isLoading}
           >
             Sign in
-          </Button>
+          </LoadingButton>
         </div>
       </form>
       <Button
