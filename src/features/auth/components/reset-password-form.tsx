@@ -32,23 +32,30 @@ export const ResetPasswordForm = () => {
   const router = useRouter();
 
   const onSubmit = async (values: ResetPasswordValues) => {
-    setIsLoading(true);
-    const token = searchParams.get("token");
-    if (!token) {
+    try {
+      setIsLoading(true);
+      const token = searchParams.get("token");
+      if (!token) {
+        return toast.error("Unauthorized");
+      }
+
+      if (values.newPassword !== values.confirmNewPassword) {
+        return toast.error("Passwords do not match");
+      }
+
+      const res = await resetPassword(token, values);
+      const error = res?.error;
+      if (error) return toast.error(error);
+
+      toast.error("Password reset successfully. Redirecting to login...", {
+        duration: 5000,
+      });
+      setTimeout(() => {
+        router.push("/login");
+      }, 5000);
+    } finally {
       setIsLoading(false);
-      return toast.error("Unauthorized");
     }
-
-    const res = await resetPassword(token, values);
-    const error = res?.error;
-    if (error) return toast.error(error);
-
-    toast.error("Password reset successfully. Redirecting to login...", {
-      duration: 5000,
-    });
-    setTimeout(() => {
-      router.push("/login");
-    }, 5000);
   };
 
   return (
