@@ -27,6 +27,7 @@ export const ResetPasswordForm = () => {
     },
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -34,9 +35,12 @@ export const ResetPasswordForm = () => {
   const onSubmit = async (values: ResetPasswordValues) => {
     try {
       setIsLoading(true);
+      setError("");
+
       const token = searchParams.get("token");
       if (!token) {
-        return toast.error("Unauthorized");
+        setError("Unathorized");
+        return;
       }
 
       if (values.newPassword !== values.confirmNewPassword) {
@@ -44,10 +48,12 @@ export const ResetPasswordForm = () => {
       }
 
       const res = await resetPassword(token, values);
-      const error = res?.error;
-      if (error) return toast.error(error);
+      if (res?.error) {
+        setError(res.error);
+        return;
+      }
 
-      toast.error("Password reset successfully. Redirecting to login...", {
+      toast.success("Password reset successfully. Redirecting to login...", {
         duration: 5000,
       });
       setTimeout(() => {
@@ -63,6 +69,7 @@ export const ResetPasswordForm = () => {
       <h1 className="mb-6 font-semibold text-3xl">Reset your password</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+          <p className="text-center text-destructive">{error}</p>
           <FormField
             control={form.control}
             name="newPassword"

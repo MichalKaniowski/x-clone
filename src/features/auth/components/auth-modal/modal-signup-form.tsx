@@ -11,7 +11,6 @@ import { Input } from "@/components/ui/primitives/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { signUp } from "../../actions/signup";
 import { signUpSchema, SignUpValues } from "../../validation";
 import { PasswordInput } from "../password-input";
@@ -26,18 +25,21 @@ export const ModalSignupForm = ({ toggleMode }: { toggleMode: () => void }) => {
     },
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   async function onSubmit(values: SignUpValues) {
     setIsLoading(true);
+    setError("");
     const { error } = await signUp(values);
     setIsLoading(false);
-
-    if (error) toast.error(error);
+    setError(error);
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+        <p className="text-center text-destructive">{error}</p>
+
         <FormField
           control={form.control}
           name="email"

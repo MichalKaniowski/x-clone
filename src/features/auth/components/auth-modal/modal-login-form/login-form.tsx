@@ -14,7 +14,6 @@ import { loginSchema, LoginValues } from "@/features/auth/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { PasswordInput } from "../../password-input";
 
 interface LoginFormProps {
@@ -34,18 +33,21 @@ export const LoginForm = ({
     },
   });
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const onSubmit = async (values: LoginValues) => {
     setIsLoading(true);
+    setError("");
     const { error } = await login(values);
     setIsLoading(false);
-
-    if (error) toast.error(error);
+    setError(error);
   };
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+        <p className="text-center text-destructive">{error}</p>
+
         <FormField
           control={form.control}
           name="username"
@@ -83,6 +85,7 @@ export const LoginForm = ({
             </FormItem>
           )}
         />
+
         <div className="mt-2">
           <LoadingButton
             type="submit"
