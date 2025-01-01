@@ -35,6 +35,7 @@ export const AuthModal = ({
           </Button>
         ) : (
           <Button
+            size="lg"
             variant="outline"
             className="border-gray-700 hover:bg-[#f3f3f3] dark:hover:bg-[#031018] border rounded-full w-full max-w-sm font-medium text-primary hover:text-primary/80"
           >
@@ -42,7 +43,7 @@ export const AuthModal = ({
           </Button>
         )}
       </DialogTrigger>
-      <DialogContent className="border-foreground/10 sm:max-w-[400px] text-white">
+      <DialogContent className="border-foreground/10 max-w-[320px] sm:max-w-[400px] text-white">
         <DialogHeader className="relative">
           <div className="flex justify-center mb-6">
             <Logo />
