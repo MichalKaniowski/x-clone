@@ -1,0 +1,102 @@
+"use client";
+
+import { useSession } from "@/components/providers/session-provider";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuTrigger,
+} from "@/components/ui/primitives/dropdown-menu";
+import { logout } from "@/features/auth/actions/logout";
+import { cn } from "@/lib/utils";
+import { useQueryClient } from "@tanstack/react-query";
+import { Check, LogOutIcon, Monitor, Moon, Sun, UserIcon } from "lucide-react";
+import { useTheme } from "next-themes";
+import Image from "next/image";
+import Link from "next/link";
+
+export const ProfileButton = ({
+  size = 40,
+  className,
+}: {
+  size?: number;
+  className?: string;
+}) => {
+  const { setTheme, theme } = useTheme();
+  const { user } = useSession();
+  const queryClient = useQueryClient();
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild className={className}>
+        <button className={cn("flex-none rounded-full")}>
+          <Image
+            src="/images/avatar-placeholder.png"
+            alt="Avatar"
+            width={size}
+            height={size}
+            className="rounded-full"
+          />
+        </button>
+      </DropdownMenuTrigger>
+
+      <DropdownMenuContent>
+        <DropdownMenuLabel>Logged in as {user.username}</DropdownMenuLabel>
+
+        <DropdownMenuSeparator />
+
+        <Link href={`/users/${user.username}`}>
+          <DropdownMenuItem>
+            <UserIcon className="mr-2 size-4" />
+            Profile
+          </DropdownMenuItem>
+        </Link>
+
+        <DropdownMenuSub>
+          <DropdownMenuSubTrigger>
+            <Monitor className="mr-2 size-4" />
+            Theme
+          </DropdownMenuSubTrigger>
+
+          <DropdownMenuPortal>
+            <DropdownMenuSubContent>
+              <DropdownMenuItem onClick={() => setTheme("system")}>
+                <Monitor className="mr-2 size-4" />
+                System default
+                {theme === "system" && <Check className="ms-2 size-4" />}
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setTheme("light")}>
+                <Sun className="mr-2 size-4" />
+                Light
+                {theme === "light" && <Check className="ms-2 size-4" />}
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setTheme("dark")}>
+                <Moon className="mr-2 size-4" />
+                Dark
+                {theme === "dark" && <Check className="ms-2 size-4" />}
+              </DropdownMenuItem>
+            </DropdownMenuSubContent>
+          </DropdownMenuPortal>
+        </DropdownMenuSub>
+
+        <DropdownMenuSeparator />
+
+        <DropdownMenuItem
+          onClick={() => {
+            queryClient.clear();
+            logout();
+          }}
+        >
+          <LogOutIcon className="mr-2 size-4" />
+          Log out
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};
