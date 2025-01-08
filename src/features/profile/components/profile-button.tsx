@@ -13,12 +13,12 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/primitives/dropdown-menu";
+import { UserAvatar } from "@/components/user-avatar";
 import { logout } from "@/features/auth/actions/logout";
 import { cn } from "@/lib/utils";
 import { useQueryClient } from "@tanstack/react-query";
 import { Check, LogOutIcon, Monitor, Moon, Sun, UserIcon } from "lucide-react";
 import { useTheme } from "next-themes";
-import Image from "next/image";
 import Link from "next/link";
 
 export const ProfileButton = ({
@@ -36,13 +36,7 @@ export const ProfileButton = ({
     <DropdownMenu>
       <DropdownMenuTrigger asChild className={className}>
         <button className={cn("flex-none rounded-full")}>
-          <Image
-            src="/images/avatar-placeholder.png"
-            alt="Avatar"
-            width={size}
-            height={size}
-            className="rounded-full"
-          />
+          <UserAvatar size={size} />
         </button>
       </DropdownMenuTrigger>
 
