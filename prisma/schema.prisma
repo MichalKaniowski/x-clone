@@ -21,6 +21,7 @@ model User {
 
   passwordResetTokens PasswordResetToken[]
   sessions            Session[]
+  posts               Post[]
 
   @@map("users")
 }
@@ -37,8 +38,16 @@ model Session {
 model PasswordResetToken {
   id        String   @id @default(cuid())
   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   token     String   @unique
   createdAt DateTime @default(now())
   expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Post {
+  id        String   @id @default(cuid())
+  userId    String
+  content   String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
 }

@@ -1,6 +1,6 @@
 import { MenuBar } from "@/components/menu-bar";
 import { WhoToFollow } from "@/components/who-to-follow";
-import { CreatePostForm } from "@/features/posts/create-post-form";
+import { CreatePostForm } from "@/features/posts/components/create-post-form";
 
 export default function HomePage() {
   return (
