@@ -1,9 +1,14 @@
 import Image from "next/image";
 
-export const UserAvatar = ({ size = 20 }: { size?: number }) => {
+interface UserAvatarProps {
+  size?: number;
+  avatarUrl?: string | null;
+}
+
+export const UserAvatar = ({ size = 20, avatarUrl }: UserAvatarProps) => {
   return (
     <Image
-      src="/images/avatar-placeholder.png"
+      src={avatarUrl || "/images/avatar-placeholder.png"}
       alt="Avatar"
       width={size}
       height={size}

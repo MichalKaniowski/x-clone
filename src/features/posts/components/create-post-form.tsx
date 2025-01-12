@@ -1,5 +1,6 @@
 "use client";
 
+import { useSession } from "@/components/providers/session-provider";
 import { AutoResizeTextarea } from "@/components/ui/auto-resize-textarea";
 import { LoadingButton } from "@/components/ui/loading-button";
 import {
@@ -11,6 +12,7 @@ import {
 } from "@/components/ui/primitives/form";
 import { UserAvatar } from "@/components/user-avatar";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -24,15 +26,19 @@ export const CreatePostForm = () => {
       content: "",
     },
   });
+  const { user } = useSession();
+  const queryClient = useQueryClient();
 
   const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async (data: CreatePostValues) => {
     setIsLoading(true);
-    const { post, error: postActionError } = await createPost(data);
+    const { error: postActionError } = await createPost(data);
     setIsLoading(false);
 
-    if (postActionError) toast.error(postActionError);
+    if (postActionError) return toast.error(postActionError);
+
+    queryClient.invalidateQueries({ queryKey: ["post-feed"] });
 
     form.reset();
   };
@@ -41,10 +47,10 @@ export const CreatePostForm = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="bg-card px-3 py-2 rounded-xl"
+        className="bg-card p-4 rounded-xl"
       >
         <div className="flex items-start gap-3 mb-5 w-full">
-          <UserAvatar size={38} />
+          <UserAvatar avatarUrl={user.avatarUrl} size={38} />
           <FormField
             control={form.control}
             name="content"

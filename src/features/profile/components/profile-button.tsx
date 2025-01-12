@@ -36,7 +36,7 @@ export const ProfileButton = ({
     <DropdownMenu>
       <DropdownMenuTrigger asChild className={className}>
         <button className={cn("flex-none rounded-full")}>
-          <UserAvatar size={size} />
+          <UserAvatar avatarUrl={user.avatarUrl} size={size} />
         </button>
       </DropdownMenuTrigger>
 
