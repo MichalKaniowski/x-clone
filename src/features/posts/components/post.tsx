@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/primitives/card";
 import { UserAvatar } from "@/components/user-avatar";
+import { getTimeAgoString } from "@/lib/utils";
 import { PostData } from "@/types";
 
 export const Post = ({ post }: { post: PostData }) => {
@@ -10,7 +11,7 @@ export const Post = ({ post }: { post: PostData }) => {
           <UserAvatar avatarUrl={post.user.avatarUrl} size={34} />
           <div>
             <p className="font-semibold text-sm">{post.user.displayName}</p>
-            <p className="text-xs">21 minutes ago</p>
+            <p className="text-xs">{getTimeAgoString(post.createdAt)}</p>
           </div>
         </div>
       </CardHeader>
