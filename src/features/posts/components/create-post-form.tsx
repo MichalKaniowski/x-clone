@@ -12,11 +12,8 @@ import {
 } from "@/components/ui/primitives/form";
 import { UserAvatar } from "@/components/user-avatar";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQueryClient } from "@tanstack/react-query";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { createPost } from "../actions/create-post";
+import { useCreatePost } from "../hooks/use-create-post";
 import { createPostSchema, CreatePostValues } from "../validation";
 
 export const CreatePostForm = () => {
@@ -27,18 +24,10 @@ export const CreatePostForm = () => {
     },
   });
   const { user } = useSession();
-  const queryClient = useQueryClient();
-
-  const [isLoading, setIsLoading] = useState(false);
+  const { mutate, isPending } = useCreatePost();
 
   const onSubmit = async (data: CreatePostValues) => {
-    setIsLoading(true);
-    const { error: postActionError } = await createPost(data);
-    setIsLoading(false);
-
-    if (postActionError) return toast.error(postActionError);
-
-    queryClient.invalidateQueries({ queryKey: ["post-feed"] });
+    mutate(data);
 
     form.reset();
   };
@@ -67,11 +56,11 @@ export const CreatePostForm = () => {
         </div>
         <div className="flex justify-end">
           <LoadingButton
-            loading={isLoading}
+            loading={isPending}
             type="submit"
             className="px-5 rounded-xl"
           >
-            Post
+            {isPending ? "Posting..." : "Post"}
           </LoadingButton>
         </div>
       </form>
