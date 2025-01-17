@@ -5,11 +5,12 @@ import { PostData } from "@/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
+import { postsQueryFactory } from "../posts-query-factory";
 import { Post } from "./post";
 
 export const Posts = () => {
   const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
-    queryKey: ["post-feed"],
+    queryKey: postsQueryFactory.getPosts,
     queryFn: ({ pageParam }) =>
       axios
         .get("/api/posts", pageParam ? { params: { cursor: pageParam } } : {})

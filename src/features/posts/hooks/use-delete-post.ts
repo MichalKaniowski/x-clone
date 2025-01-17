@@ -6,6 +6,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { deletePost } from "../actions/delete-post";
+import { postsQueryFactory } from "../posts-query-factory";
 
 export const useDeletePost = () => {
   const queryClient = useQueryClient();
@@ -13,7 +14,9 @@ export const useDeletePost = () => {
   return useMutation({
     mutationFn: deletePost,
     onSuccess: async (deletedPost) => {
-      const queryFilter: QueryFilters = { queryKey: ["post-feed"] };
+      const queryFilter: QueryFilters = {
+        queryKey: postsQueryFactory.deletePost,
+      };
       await queryClient.cancelQueries(queryFilter);
 
       queryClient.setQueriesData<InfiniteData<PostsPage, string | null>>(

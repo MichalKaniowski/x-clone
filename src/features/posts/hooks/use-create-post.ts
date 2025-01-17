@@ -6,6 +6,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { createPost } from "../actions/create-post";
+import { postsQueryFactory } from "../posts-query-factory";
 
 export const useCreatePost = () => {
   const queryClient = useQueryClient();
@@ -13,7 +14,9 @@ export const useCreatePost = () => {
   return useMutation({
     mutationFn: createPost,
     onSuccess: async (createdPost: PostData) => {
-      const queryFilter: QueryFilters = { queryKey: ["post-feed"] };
+      const queryFilter: QueryFilters = {
+        queryKey: postsQueryFactory.createPost,
+      };
       await queryClient.cancelQueries(queryFilter);
 
       queryClient.setQueriesData<InfiniteData<PostsPage, string | null>>(
