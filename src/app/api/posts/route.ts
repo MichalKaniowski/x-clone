@@ -1,6 +1,6 @@
 import { validateRequest } from "@/auth";
 import prisma from "@/lib/prisma";
-import { postDataInclude, PostsPage } from "@/types";
+import { getPostDataInclude, PostsPage } from "@/types";
 import { NextRequest } from "next/server";
 
 const PAGE_SIZE = 10;
@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
     const cursor = req.nextUrl.searchParams.get("cursor") || undefined;
 
     const posts = await prisma.post.findMany({
-      include: postDataInclude,
+      include: getPostDataInclude(user.id),
       orderBy: { createdAt: "desc" },
       cursor: cursor ? { id: cursor } : undefined,
       take: PAGE_SIZE + 1,

@@ -14,19 +14,14 @@ import {
 import { UserAvatar } from "@/components/user-avatar";
 import { cn, getTimeAgoString } from "@/lib/utils";
 import { PostData } from "@/types";
-import { Bookmark, Ellipsis, Heart, MessageSquare, Trash } from "lucide-react";
+import { Bookmark, Ellipsis, MessageSquare, Trash } from "lucide-react";
 import { useDeletePost } from "../hooks/use-delete-post";
-import { useLikePost } from "../hooks/use-like-post";
+import { PostLikeButton } from "./post-like-button";
 
 export const Post = ({ post }: { post: PostData }) => {
   const { user } = useSession();
   const { mutate: deletePostMutate, isPending: deletePostPending } =
     useDeletePost();
-  const { mutate: likePostMutate } = useLikePost();
-
-  // todo: add optimistic updates for likes
-
-  const hasUserLikePost = post.likes.some((like) => like.userId === user.id);
 
   return (
     <Card className={cn("relative group", deletePostPending && "opacity-80")}>
@@ -65,19 +60,15 @@ export const Post = ({ post }: { post: PostData }) => {
       <CardFooter className="p-3">
         <div className="flex justify-between items-center w-full h-full">
           <div className="flex items-center gap-3">
-            <button
-              onClick={() => likePostMutate(post.id)}
-              className={"flex items-center gap-1 group/button"}
-            >
-              <Heart
-                size={16}
-                className={cn(
-                  "group-hover/button:text-red-500",
-                  hasUserLikePost && "text-red-500"
-                )}
-              />
-              <span className="text-sm">2 likes</span>
-            </button>
+            <PostLikeButton
+              postId={post.id}
+              initialState={{
+                likes: post._count.likes,
+                isLikedByUser: post.likes.some(
+                  (like) => like.userId === user.id
+                ),
+              }}
+            />
             <button className="flex items-center gap-1">
               <MessageSquare size={16} />
               <span className="text-sm">3 comments</span>

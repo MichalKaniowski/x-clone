@@ -2,7 +2,7 @@
 
 import { validateRequest } from "@/auth";
 import prisma from "@/lib/prisma";
-import { PostData, postDataInclude } from "@/types";
+import { getPostDataInclude, PostData } from "@/types";
 import { createPostSchema, CreatePostValues } from "./../validation";
 
 export const createPost = async (data: CreatePostValues): Promise<PostData> => {
@@ -20,7 +20,7 @@ export const createPost = async (data: CreatePostValues): Promise<PostData> => {
       userId: user.id,
       content: validatedData.data.content,
     },
-    include: postDataInclude,
+    include: getPostDataInclude(user.id),
   });
 
   return createdPost;

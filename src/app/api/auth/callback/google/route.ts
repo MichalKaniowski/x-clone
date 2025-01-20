@@ -1,8 +1,8 @@
 import { google, lucia } from "@/auth";
+import kyInstance from "@/lib/ky";
 import prisma from "@/lib/prisma";
 import { slugify } from "@/lib/utils";
 import { OAuth2RequestError } from "arctic";
-import axios from "axios";
 import { generateIdFromEntropySize } from "lucia";
 import { cookies } from "next/headers";
 import { NextRequest } from "next/server";
@@ -28,18 +28,17 @@ export async function GET(req: NextRequest) {
       code,
       storedCodeVerifier
     );
-    const googleUser = await axios.get<{ id: string; name: string }>(
-      "https://www.googleapis.com/oauth2/v1/userinfo",
-      {
+    const googleUser = await kyInstance
+      .get("https://www.googleapis.com/oauth2/v1/userinfo", {
         headers: {
           Authorization: `Bearer ${tokens.accessToken}`,
         },
-      }
-    );
+      })
+      .json<{ id: string; name: string }>();
 
     const existingUser = await prisma.user.findUnique({
       where: {
-        googleId: googleUser.data.id,
+        googleId: googleUser.id,
       },
     });
 
@@ -55,14 +54,14 @@ export async function GET(req: NextRequest) {
     }
 
     const userId = generateIdFromEntropySize(10);
-    const username = slugify(googleUser.data.name) + "-" + userId.slice(0, 4);
+    const username = slugify(googleUser.name) + "-" + userId.slice(0, 4);
 
     await prisma.user.create({
       data: {
         id: userId,
         username,
-        displayName: googleUser.data.name,
-        googleId: googleUser.data.id,
+        displayName: googleUser.name,
+        googleId: googleUser.id,
       },
     });
 
