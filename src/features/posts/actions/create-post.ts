@@ -15,7 +15,7 @@ export const createPost = async (data: CreatePostValues): Promise<PostData> => {
     throw new Error("Invalid data");
   }
 
-  const createdPost: PostData = await prisma.post.create({
+  const createdPost = await prisma.post.create({
     data: {
       userId: user.id,
       content: validatedData.data.content,

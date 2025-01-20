@@ -8,6 +8,7 @@ export const postDataInclude = {
       avatarUrl: true,
     },
   },
+  likes: true,
 } satisfies Prisma.PostInclude;
 
 export type PostData = Prisma.PostGetPayload<{
