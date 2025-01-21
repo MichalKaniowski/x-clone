@@ -39,7 +39,7 @@ export const CreatePostForm = () => {
         className="bg-card p-4 rounded-xl"
       >
         <div className="flex items-start gap-3 mb-5 w-full">
-          <UserAvatar avatarUrl={user.avatarUrl} size={38} />
+          <UserAvatar avatarUrl={user.avatarUrl} size={34} />
           <FormField
             control={form.control}
             name="content"

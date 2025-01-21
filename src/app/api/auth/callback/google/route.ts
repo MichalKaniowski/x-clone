@@ -7,6 +7,16 @@ import { generateIdFromEntropySize } from "lucia";
 import { cookies } from "next/headers";
 import { NextRequest } from "next/server";
 
+interface GoogleUser {
+  id: string;
+  email: string;
+  verified_email: boolean;
+  name: string;
+  given_name: string;
+  family_name: string;
+  picture: string;
+}
+
 export async function GET(req: NextRequest) {
   const code = req.nextUrl.searchParams.get("code");
   const state = req.nextUrl.searchParams.get("state");
@@ -34,7 +44,7 @@ export async function GET(req: NextRequest) {
           Authorization: `Bearer ${tokens.accessToken}`,
         },
       })
-      .json<{ id: string; name: string }>();
+      .json<GoogleUser>();
 
     const existingUser = await prisma.user.findUnique({
       where: {
@@ -62,6 +72,7 @@ export async function GET(req: NextRequest) {
         username,
         displayName: googleUser.name,
         googleId: googleUser.id,
+        avatarUrl: googleUser.picture,
       },
     });
 

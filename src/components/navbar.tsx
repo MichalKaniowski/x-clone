@@ -17,7 +17,7 @@ export const Navbar = () => {
             <Search className="top-1/2 right-2 absolute text-muted-foreground transform -translate-y-1/2 size-5" />
           </div>
         </div>
-        <ProfileButton size={42} className="sm:block hidden" />
+        <ProfileButton size={34} className="sm:block hidden" />
       </div>
     </header>
   );
