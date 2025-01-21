@@ -1,20 +1,22 @@
 import { LikeInfo } from "@/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { likePost as likePostAction } from "../actions/like-post";
+import { postsQueryFactory } from "../posts-query-factory";
 
 export const useLikePost = (postId: string) => {
   const queryClient = useQueryClient();
+  const queryKey = postsQueryFactory.getLikeInfo(postId);
 
   return useMutation({
     mutationFn: likePostAction,
     onMutate: async () => {
-      await queryClient.cancelQueries({ queryKey: ["like-info", postId] });
+      await queryClient.cancelQueries({ queryKey: queryKey });
       const previousState = queryClient.getQueryData<LikeInfo>([
         "like-info",
         postId,
       ]);
 
-      queryClient.setQueryData<LikeInfo>(["like-info", postId], () => {
+      queryClient.setQueryData<LikeInfo>(queryKey, () => {
         return {
           likes: previousState?.isLikedByUser
             ? previousState.likes - 1
@@ -26,7 +28,7 @@ export const useLikePost = (postId: string) => {
       return { previousState };
     },
     onError: async (error, variables, context) => {
-      queryClient.setQueryData(["like-info", postId], context?.previousState);
+      queryClient.setQueryData(queryKey, context?.previousState);
     },
   });
 };

@@ -4,6 +4,7 @@ import { LikeInfo } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { Heart } from "lucide-react";
 import { useLikePost } from "../hooks/use-like-post";
+import { postsQueryFactory } from "../posts-query-factory";
 
 export const PostLikeButton = ({
   postId,
@@ -14,7 +15,7 @@ export const PostLikeButton = ({
 }) => {
   const { mutate: likePostMutate } = useLikePost(postId);
   const { data: likeInfo } = useQuery({
-    queryKey: ["like-info", postId],
+    queryKey: postsQueryFactory.getLikeInfo(postId),
     queryFn: () =>
       kyInstance.get(`/api/posts/${postId}/likes`).json<LikeInfo>(),
     initialData: initialState,
