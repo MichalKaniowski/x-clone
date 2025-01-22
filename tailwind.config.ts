@@ -10,6 +10,15 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      animation: {
+        like: "like-animation 0.3s ease-in-out",
+      },
+      keyframes: {
+        "like-animation": {
+          "0%, 100%": { transform: "scale(1)" },
+          "50%": { transform: "scale(1.2)" },
+        },
+      },
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",

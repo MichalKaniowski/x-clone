@@ -3,10 +3,11 @@ import { cn } from "@/lib/utils";
 import { LikeInfo } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { Heart } from "lucide-react";
+import { useState } from "react";
 import { useLikePost } from "../hooks/use-like-post";
 import { postsQueryFactory } from "../posts-query-factory";
 
-export const PostLikeButton = ({
+export const LikePostButton = ({
   postId,
   initialState,
 }: {
@@ -14,6 +15,8 @@ export const PostLikeButton = ({
   initialState: LikeInfo;
 }) => {
   const { mutate: likePostMutate } = useLikePost(postId);
+
+  // this will never be called, it's for making state managment easier
   const { data: likeInfo } = useQuery({
     queryKey: postsQueryFactory.getLikeInfo(postId),
     queryFn: () =>
@@ -22,16 +25,25 @@ export const PostLikeButton = ({
     staleTime: Infinity,
   });
 
+  const [isAnimating, setAnimating] = useState(false);
+
   return (
     <button
-      onClick={() => likePostMutate(postId)}
+      onClick={() => {
+        setAnimating(true);
+        likePostMutate(postId);
+        setTimeout(() => {
+          setAnimating(false);
+        }, 200);
+      }}
       className={"flex items-center gap-1 group/button"}
     >
       <Heart
         size={16}
         className={cn(
           "group-hover/button:text-red-500",
-          likeInfo.isLikedByUser && "fill-red-500  text-red-500 "
+          likeInfo.isLikedByUser && "fill-red-500  text-red-500",
+          isAnimating && "animate-like"
         )}
       />
       <span className="text-sm">{likeInfo.likes} likes</span>

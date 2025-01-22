@@ -16,7 +16,7 @@ import { cn, getTimeAgoString } from "@/lib/utils";
 import { PostData } from "@/types";
 import { Bookmark, Ellipsis, MessageSquare, Trash } from "lucide-react";
 import { useDeletePost } from "../hooks/use-delete-post";
-import { PostLikeButton } from "./post-like-button";
+import { LikePostButton } from "./like-post-button";
 
 export const Post = ({ post }: { post: PostData }) => {
   const { user } = useSession();
@@ -60,7 +60,7 @@ export const Post = ({ post }: { post: PostData }) => {
       <CardFooter className="p-3">
         <div className="flex justify-between items-center w-full h-full">
           <div className="flex items-center gap-3">
-            <PostLikeButton
+            <LikePostButton
               postId={post.id}
               initialState={{
                 likes: post._count.likes,
