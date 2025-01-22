@@ -12,18 +12,18 @@ export async function login(
   credentials: LoginValues
 ): Promise<{ error: string }> {
   try {
-    const { username, password } = loginSchema.parse(credentials);
+    const { email, password } = loginSchema.parse(credentials);
     const existingUser = await prisma.user.findFirst({
       where: {
-        username: {
-          equals: username,
+        email: {
+          equals: email,
           mode: "insensitive",
         },
       },
     });
     if (!existingUser || !existingUser.passwordHash) {
       return {
-        error: "Incorrect username or password",
+        error: "Incorrect email or password",
       };
     }
     const validPassword = await verify(existingUser.passwordHash, password, {
@@ -34,7 +34,7 @@ export async function login(
     });
     if (!validPassword) {
       return {
-        error: "Incorrect username or password",
+        error: "Incorrect email or password",
       };
     }
     const session = await lucia.createSession(existingUser.id, {});

@@ -28,7 +28,7 @@ export const LoginForm = ({
   const form = useForm<LoginValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
   });
@@ -50,13 +50,13 @@ export const LoginForm = ({
 
         <FormField
           control={form.control}
-          name="username"
+          name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Username</FormLabel>
+              <FormLabel>Email</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="Username"
+                  placeholder="Email"
                   className="dark:border-white/20 h-12 dark:placeholder:text-white/40"
                   {...field}
                 />
