@@ -17,6 +17,7 @@ import { PostData } from "@/types";
 import { Bookmark, Ellipsis, MessageSquare, Trash } from "lucide-react";
 import { useDeletePost } from "../hooks/use-delete-post";
 import { LikePostButton } from "./like-post-button";
+import { PostProfilePopover } from "./post-profile-popover";
 
 export const Post = ({ post }: { post: PostData }) => {
   const { user } = useSession();
@@ -46,10 +47,19 @@ export const Post = ({ post }: { post: PostData }) => {
       </div>
       <CardHeader>
         <div className="flex items-center gap-3">
-          <UserAvatar avatarUrl={post.user.avatarUrl} size={34} />
+          <PostProfilePopover
+            TriggerComponent={
+              <UserAvatar avatarUrl={post.user.avatarUrl} size={34} />
+            }
+            post={post}
+          />
           <div>
-            <p className="font-semibold text-sm">{post.user.displayName}</p>
-            <p className="text-xs">{getTimeAgoString(post.createdAt)}</p>
+            <a href={`/profile/${post.user.username}`}>
+              <p className="font-semibold text-sm">{post.user.displayName}</p>
+            </a>
+            <a href={`/post/${post.id}`}>
+              <p className="text-xs">{getTimeAgoString(post.createdAt)}</p>
+            </a>
           </div>
         </div>
       </CardHeader>

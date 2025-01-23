@@ -5,7 +5,6 @@ import prisma from "@/lib/prisma";
 
 export const likePost = async (postId: string) => {
   const { user } = await validateRequest();
-
   if (!user) throw new Error("Unathorized");
 
   const existingLike = await prisma.like.findFirst({

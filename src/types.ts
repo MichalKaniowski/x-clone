@@ -1,5 +1,21 @@
 import { Prisma } from "@prisma/client";
 
+export const getUserDataSelect = () => {
+  return {
+    id: true,
+    username: true,
+    displayName: true,
+    email: true,
+    avatarUrl: true,
+    bio: true,
+    createdAt: true,
+  } satisfies Prisma.UserSelect;
+};
+
+export type UserData = Prisma.UserGetPayload<{
+  select: ReturnType<typeof getUserDataSelect>;
+}>;
+
 export const getPostDataInclude = (userId: string) => {
   return {
     user: {
