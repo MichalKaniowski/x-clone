@@ -2,6 +2,7 @@ import { validateRequest } from "@/auth";
 import { Button } from "@/components/ui/primitives/button";
 import { Card } from "@/components/ui/primitives/card";
 import { UserAvatar } from "@/components/user-avatar";
+import { FollowButton } from "@/features/profile/components/follow-button";
 import { ProfilePosts } from "@/features/profile/components/profile-posts";
 import prisma from "@/lib/prisma";
 import { getUserDataSelect } from "@/types";
@@ -63,7 +64,7 @@ export default async function ProfilePage({
           {loggedInUser.id === user.id ? (
             <Button className="rounded-xl">Edit profile</Button>
           ) : (
-            <Button>Follow</Button>
+            <FollowButton user={user} />
           )}
         </div>
         <p className="mt-[-3px] mb-4 text-muted-foreground">@{user.username}</p>

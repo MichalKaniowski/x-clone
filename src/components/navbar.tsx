@@ -1,7 +1,7 @@
-import { ProfileButton } from "@/features/profile/components/profile-button";
 import { Search } from "lucide-react";
 import Link from "next/link";
 import { Logo } from "./logo";
+import { ProfileButton } from "./profile-button";
 import { Input } from "./ui/primitives/input";
 
 export const Navbar = () => {

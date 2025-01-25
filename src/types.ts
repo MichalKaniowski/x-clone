@@ -9,6 +9,11 @@ export const getUserDataSelect = () => {
     avatarUrl: true,
     bio: true,
     createdAt: true,
+    followers: {
+      select: {
+        followerId: true,
+      },
+    },
   } satisfies Prisma.UserSelect;
 };
 
