@@ -14,6 +14,12 @@ export const getUserDataSelect = () => {
         followerId: true,
       },
     },
+    _count: {
+      select: {
+        followers: true,
+        posts: true,
+      },
+    },
   } satisfies Prisma.UserSelect;
 };
 
@@ -55,4 +61,9 @@ export type PostsPage = {
 export type LikeInfo = {
   likes: number;
   isLikedByUser: boolean;
+};
+
+export type FollowInfo = {
+  followers: number;
+  isFollowedByUser: boolean;
 };

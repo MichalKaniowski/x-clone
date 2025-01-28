@@ -2,6 +2,7 @@
 
 import InfiniteScrollingContainer from "@/components/infinite-scrolling-container";
 import { Post } from "@/features/posts/components/post";
+import { postsQueryFactory } from "@/features/posts/posts-query-factory";
 import kyInstance from "@/lib/ky";
 import { PostsPage } from "@/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -9,7 +10,7 @@ import { Loader2 } from "lucide-react";
 
 export const ProfilePosts = ({ userId }: { userId: string }) => {
   const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
-    queryKey: ["post-feed", "user-posts", userId],
+    queryKey: postsQueryFactory.getProfilePosts(userId),
     queryFn: ({ pageParam }) =>
       kyInstance
         .get(

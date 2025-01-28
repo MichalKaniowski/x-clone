@@ -73,8 +73,8 @@ export default async function ProfilePage({
           Member since {user.createdAt.toLocaleDateString()}
         </p>
         <div className="flex gap-3">
-          <span>Posts: 20</span>
-          <span>Followers: 10</span>
+          <span>Posts: {user._count.posts}</span>
+          <span>Followers: {user._count.followers}</span>
         </div>
 
         {user.bio ? (

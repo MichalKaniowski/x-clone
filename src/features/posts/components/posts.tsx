@@ -10,7 +10,7 @@ import { Post } from "./post";
 
 export const Posts = () => {
   const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
-    queryKey: postsQueryFactory.getPosts,
+    queryKey: postsQueryFactory.posts,
     queryFn: ({ pageParam }) =>
       kyInstance
         .get(

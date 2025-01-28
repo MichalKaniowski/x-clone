@@ -8,7 +8,7 @@ export async function GET(
   { params }: { params: { userId: string } }
 ) {
   try {
-    const { userId } = await params; // do not remove this await
+    const { userId } = await params;
 
     const { user } = await validateRequest();
     if (!user) return Response.json({ error: "Unauthorized" }, { status: 401 });
