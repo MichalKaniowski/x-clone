@@ -1,11 +1,11 @@
-import { postsQueryFactory } from "@/features/posts/posts-query-factory";
 import { followUser } from "@/features/profile/actions/follow-user";
 import { FollowInfo } from "@/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { profileQueryFactory } from "../profile-query-factory";
 
 export const useFollowUser = (userId: string) => {
   const queryClient = useQueryClient();
-  const queryKey = postsQueryFactory.getFollowInfo(userId);
+  const queryKey = profileQueryFactory.getFollowInfo(userId);
 
   return useMutation({
     mutationFn: followUser,

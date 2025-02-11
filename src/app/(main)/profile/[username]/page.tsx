@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/primitives/card";
 import { UserAvatar } from "@/components/user-avatar";
 import { FollowButton } from "@/features/profile/components/follow-button";
 import { ProfilePosts } from "@/features/profile/components/profile-posts";
+import { ProfileStats } from "@/features/profile/components/profile-stats";
 import prisma from "@/lib/prisma";
 import { getUserDataSelect } from "@/types";
 import { redirect } from "next/navigation";
@@ -72,10 +73,8 @@ export default async function ProfilePage({
         <p className="mb-1 text-sm">
           Member since {user.createdAt.toLocaleDateString()}
         </p>
-        <div className="flex gap-3">
-          <span>Posts: {user._count.posts}</span>
-          <span>Followers: {user._count.followers}</span>
-        </div>
+
+        <ProfileStats user={user} />
 
         {user.bio ? (
           <div>
