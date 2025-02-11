@@ -15,6 +15,7 @@ import { UserAvatar } from "@/components/user-avatar";
 import { cn, getTimeAgoString } from "@/lib/utils";
 import { PostData } from "@/types";
 import { Bookmark, Ellipsis, MessageSquare, Trash } from "lucide-react";
+import Link from "next/link";
 import { useDeletePost } from "../hooks/use-delete-post";
 import { LikePostButton } from "./like-post-button";
 import { PostProfilePopover } from "./post-profile-popover";
@@ -54,12 +55,12 @@ export const Post = ({ post }: { post: PostData }) => {
             post={post}
           />
           <div>
-            <a href={`/profile/${post.user.username}`}>
+            <Link href={`/profile/${post.user.username}`}>
               <p className="font-semibold text-sm">{post.user.displayName}</p>
-            </a>
-            <a href={`/post/${post.id}`}>
+            </Link>
+            <Link href={`/post/${post.id}`}>
               <p className="text-xs">{getTimeAgoString(post.createdAt)}</p>
-            </a>
+            </Link>
           </div>
         </div>
       </CardHeader>

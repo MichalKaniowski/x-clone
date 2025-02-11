@@ -1,4 +1,5 @@
 import { Bell, Bookmark, House, Mail } from "lucide-react";
+import Link from "next/link";
 
 const MENU_BAR_ITEMS = [
   { name: "Home", href: "/", icon: <House size={21} /> },
@@ -12,14 +13,14 @@ export const MenuBar = () => {
     <div className="bg-card px-3 py-2 rounded-xl">
       {MENU_BAR_ITEMS.map((item) => {
         return (
-          <a
+          <Link
             key={item.name}
             href={item.href}
             className="flex items-center gap-3 hover:opacity-70 p-3"
           >
             {item.icon}
             {item.name}
-          </a>
+          </Link>
         );
       })}
     </div>
