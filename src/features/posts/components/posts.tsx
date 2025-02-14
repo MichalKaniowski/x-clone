@@ -1,26 +1,17 @@
 "use client";
 
 import InfiniteScrollingContainer from "@/components/infinite-scrolling-container";
-import kyInstance from "@/lib/ky";
-import { PostData, PostsPage } from "@/types";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { Feed, PostData } from "@/types";
 import { Loader2 } from "lucide-react";
-import { postsQueryFactory } from "../posts-query-factory";
+import { usePosts } from "../hooks/use-posts";
 import { Post } from "./post";
 
-export const Posts = () => {
-  const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
-    queryKey: postsQueryFactory.posts,
-    queryFn: ({ pageParam }) =>
-      kyInstance
-        .get(
-          "/api/posts",
-          pageParam ? { searchParams: { cursor: pageParam } } : {}
-        )
-        .json<PostsPage>(),
-    initialPageParam: null as string | null,
-    getNextPageParam: (lastPage) => lastPage.nextCursor,
-  });
+interface PostsProps {
+  feed: Feed;
+}
+
+export const Posts = ({ feed }: PostsProps) => {
+  const { data, fetchNextPage, hasNextPage, isFetching } = usePosts(feed);
 
   return (
     <InfiniteScrollingContainer

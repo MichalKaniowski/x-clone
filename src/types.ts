@@ -67,3 +67,5 @@ export type FollowInfo = {
   followers: number;
   isFollowedByUser: boolean;
 };
+
+export type Feed = "for-you" | "following";
