@@ -13,6 +13,7 @@ export async function GET(req: NextRequest) {
     const cursor = req.nextUrl.searchParams.get("cursor") || undefined;
 
     const posts = await prisma.post.findMany({
+      where: { userId: { not: user.id } },
       include: getPostDataInclude(user.id),
       orderBy: { createdAt: "desc" },
       cursor: cursor ? { id: cursor } : undefined,
