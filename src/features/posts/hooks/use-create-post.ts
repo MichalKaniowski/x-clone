@@ -1,3 +1,4 @@
+import { useSession } from "@/components/providers/session-provider";
 import { PostData, PostsPage } from "@/types";
 import {
   InfiniteData,
@@ -10,12 +11,20 @@ import { postsQueryFactory } from "../posts-query-factory";
 
 export const useCreatePost = () => {
   const queryClient = useQueryClient();
+  const { user } = useSession();
 
   return useMutation({
     mutationFn: createPost,
     onSuccess: async (createdPost: PostData) => {
       const queryFilter: QueryFilters = {
         queryKey: postsQueryFactory.createPost,
+        predicate(query) {
+          return (
+            query.queryKey.includes("for-you") ||
+            (query.queryKey.includes("user-posts") &&
+              query.queryKey.includes(user.id))
+          );
+        },
       };
       await queryClient.cancelQueries(queryFilter);
 
