@@ -7,6 +7,7 @@ import { profileQueryFactory } from "../profile-query-factory";
 export const useFollowInfo = (user: UserData) => {
   const { user: loggedInUser } = useSession();
 
+  // this will never be called, it's for making state managment easier
   return useQuery({
     queryKey: profileQueryFactory.getFollowInfo(user.id),
     queryFn: () =>
