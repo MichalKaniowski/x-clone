@@ -1,7 +1,7 @@
 import { validateRequest } from "@/auth";
-import { Button } from "@/components/ui/primitives/button";
 import { Card } from "@/components/ui/primitives/card";
 import { UserAvatar } from "@/components/user-avatar";
+import { EditProfileDialog } from "@/features/profile/components/edit-profile-dialog";
 import { FollowButton } from "@/features/profile/components/follow-button";
 import { ProfilePosts } from "@/features/profile/components/profile-posts";
 import { ProfileStats } from "@/features/profile/components/profile-stats";
@@ -63,7 +63,7 @@ export default async function ProfilePage({
         <div className="flex justify-between items-center">
           <h1>{user.displayName}</h1>
           {loggedInUser.id === user.id ? (
-            <Button className="rounded-xl">Edit profile</Button>
+            <EditProfileDialog />
           ) : (
             <FollowButton user={user} />
           )}
@@ -86,7 +86,7 @@ export default async function ProfilePage({
       </Card>
 
       <Card className="my-4 p-3.5">
-        <p className="font-semibold text-center text-lg">
+        <p className="font-semibold text-lg text-center">
           {user.displayName}&apos;s posts
         </p>
       </Card>

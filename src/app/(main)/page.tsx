@@ -13,7 +13,7 @@ export default async function HomePage() {
       <CreatePostForm />
 
       <div className="mt-4">
-        <Tabs defaultValue="following">
+        <Tabs defaultValue="for-you">
           <TabsList className="flex w-full h-10">
             <TabsTrigger value="for-you" className="flex-1">
               For you

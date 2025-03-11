@@ -13,10 +13,11 @@ model User {
   username     String   @unique
   displayName  String
   email        String   @unique
-  passwordHash String?
   googleId     String?  @unique
   avatarUrl    String?
+  bannerUrl    String?
   bio          String?
+  passwordHash String?
   createdAt    DateTime @default(now())
 
   passwordResetTokens PasswordResetToken[]

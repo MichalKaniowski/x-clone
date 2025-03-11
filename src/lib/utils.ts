@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { ZodError } from "zod";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -16,7 +17,9 @@ export function slugify(input: string): string {
 export const getErrorMessage = (error: unknown) => {
   let message: string;
 
-  if (error instanceof Error) {
+  if (error instanceof ZodError) {
+    return error.errors[0].message;
+  } else if (error instanceof Error) {
     message = error.message;
   } else if (typeof error === "string") {
     message = error;

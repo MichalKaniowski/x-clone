@@ -19,9 +19,12 @@ export const lucia = new Lucia(adapter, {
       id: databaseUserAttributes.id,
       username: databaseUserAttributes.username,
       displayName: databaseUserAttributes.displayName,
-      avatarUrl: databaseUserAttributes.avatarUrl,
-      googleId: databaseUserAttributes.googleId,
       email: databaseUserAttributes.email,
+      googleId: databaseUserAttributes.googleId,
+      avatarUrl: databaseUserAttributes.avatarUrl,
+      bannerUrl: databaseUserAttributes.bannerUrl,
+      bio: databaseUserAttributes.bio,
+      createdAt: databaseUserAttributes.createdAt,
     };
   },
 });
@@ -38,6 +41,9 @@ interface DatabaseUserAttributes {
   avatarUrl: string | null;
   googleId: string | null;
   email: string;
+  bannerUrl: string | null;
+  bio: string | null;
+  createdAt: Date;
 }
 
 export const google = new Google(
