@@ -31,6 +31,7 @@ export const getPostDataInclude = (userId: string) => {
   return {
     user: {
       select: {
+        id: true,
         username: true,
         displayName: true,
         avatarUrl: true,

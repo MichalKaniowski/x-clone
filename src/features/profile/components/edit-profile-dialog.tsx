@@ -1,43 +1,68 @@
 "use client";
 
+import avatarPlaceholder from "@/assets/avatar-placeholder.png";
 import { useSession } from "@/components/providers/session-provider";
+import { LoadingButton } from "@/components/ui/loading-button";
 import { Button } from "@/components/ui/primitives/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogFooter,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/primitives/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/primitives/form";
 import { Input } from "@/components/ui/primitives/input";
-import { Label } from "@/components/ui/primitives/label";
 import { Textarea } from "@/components/ui/primitives/textarea";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { X } from "lucide-react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { toast } from "sonner";
-import { editProfile } from "../actions/edit-profile";
+import { useForm } from "react-hook-form";
+import { TbCameraPlus } from "react-icons/tb";
+import { useUpdateProfileMutation } from "../hooks/use-update-profile";
+import {
+  updateUserProfileSchema,
+  UpdateUserProfileValues,
+} from "../validation";
+import { AvatarInput } from "./avatar-input";
 
 export const EditProfileDialog = () => {
   const { user } = useSession();
 
-  const [displayName, setDisplayName] = useState(user.displayName);
-  const [bio, setBio] = useState(user.bio || "");
-  const router = useRouter();
+  const form = useForm<UpdateUserProfileValues>({
+    resolver: zodResolver(updateUserProfileSchema),
+    defaultValues: {
+      displayName: user.displayName,
+      bio: user.bio || "",
+    },
+  });
+  const mutation = useUpdateProfileMutation();
+  const [croppedAvatar, setCroppedAvatar] = useState<Blob | null>(null);
 
-  const handleEditProfileChange = async () => {
-    const { updatedUser, error } = await editProfile({ displayName, bio });
-
-    if (error) {
-      toast.error(error);
-    }
-
-    router.refresh();
-
-    // TODO: add ability to change banner and avatar images
-    // TODO: add form to the dialog, so user see validation errors
-  };
+  async function onSubmit(values: UpdateUserProfileValues) {
+    const newAvatarFile = croppedAvatar
+      ? new File([croppedAvatar], `avatar_${user.id}.webp`)
+      : undefined;
+    mutation.mutate(
+      {
+        values,
+        avatar: newAvatarFile,
+      },
+      {
+        onSuccess: () => {
+          setCroppedAvatar(null);
+        },
+      }
+    );
+  }
 
   return (
     <Dialog>
@@ -49,55 +74,79 @@ export const EditProfileDialog = () => {
 
       <DialogContent className="w-[600px]">
         <DialogTitle>Edit profile</DialogTitle>
-        <div className="relative w-full aspect-[3/1]">
-          <Image src="/images/baner.jpeg" alt="avatar" fill />
-
+        <div className="relative w-full aspect-[3/1] cursor-pointer">
           <Image
-            src="/images/avatar.jpg"
-            alt="avatar"
-            width={85}
-            height={85}
-            className="bottom-[-30px] left-4 absolute rounded-full"
+            src="/images/banner-placeholder.png"
+            alt="banner"
+            fill
+            className="opacity-95"
+          />
+          <div className="group/banner absolute inset-0 flex justify-center items-center">
+            <div className="group-hover/banner:flex hidden justify-center items-center bg-black bg-opacity-50 ml-2 rounded-full w-10 h-10">
+              <TbCameraPlus className="text-white" size={20} />
+            </div>
+            <div className="group-hover/banner:flex hidden justify-center items-center bg-black bg-opacity-50 rounded-full w-10 h-10">
+              <X className="text-white" size={20} />
+            </div>
+          </div>
+
+          <AvatarInput
+            src={
+              croppedAvatar
+                ? URL.createObjectURL(croppedAvatar)
+                : user.avatarUrl || avatarPlaceholder
+            }
+            onImageCropped={setCroppedAvatar}
           />
         </div>
 
-        <div className="space-y-3 mt-7">
-          <div>
-            <Label htmlFor="name" className="ml-1">
-              Display Name
-            </Label>
-            <Input
-              id="name"
-              className="mt-1"
-              value={displayName}
-              onChange={(e) => setDisplayName(e.target.value)}
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-3 mt-7"
+          >
+            <FormField
+              control={form.control}
+              name="displayName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="ml-1">Display name</FormLabel>
+                  <FormControl>
+                    <Input className="mt-1" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
-          <div>
-            <Label htmlFor="bio" className="ml-1">
-              Bio
-            </Label>
-            <Textarea
-              id="bio"
-              className="mt-1"
-              placeholder="Tell us about yourself..."
-              value={bio}
-              onChange={(e) => setBio(e.target.value)}
-              rows={4}
+            <FormField
+              control={form.control}
+              name="bio"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Bio</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Tell us a little bit about yourself"
+                      rows={4}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
-        </div>
 
-        <DialogFooter className="mt-4">
-          <DialogClose asChild>
-            <Button
-              onClick={handleEditProfileChange}
-              className="bg-foreground hover:bg-foreground/90 text-background"
-            >
-              Save
-            </Button>
-          </DialogClose>
-        </DialogFooter>
+            <DialogFooter>
+              <LoadingButton
+                type="submit"
+                className="bg-foreground hover:bg-foreground/90 mt-4 text-background"
+                loading={mutation.isPending}
+              >
+                Save
+              </LoadingButton>
+            </DialogFooter>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );
