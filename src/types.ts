@@ -7,6 +7,7 @@ export const getUserDataSelect = () => {
     displayName: true,
     email: true,
     avatarUrl: true,
+    bannerUrl: true,
     bio: true,
     createdAt: true,
     followers: {

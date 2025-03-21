@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import { Camera } from "lucide-react";
 import Image, { StaticImageData } from "next/image";
 import { useRef, useState } from "react";
@@ -6,10 +7,11 @@ import CropImageDialog from "./crop-image-dialog";
 
 interface AvatarInputProps {
   src: string | StaticImageData;
+  type: "avatar" | "banner";
   onImageCropped: (blob: Blob | null) => void;
 }
 
-export function AvatarInput({ src, onImageCropped }: AvatarInputProps) {
+export const ImageInput = ({ src, type, onImageCropped }: AvatarInputProps) => {
   const [imageToCrop, setImageToCrop] = useState<File>();
 
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -39,20 +41,35 @@ export function AvatarInput({ src, onImageCropped }: AvatarInputProps) {
         className="sr-only hidden"
       />
 
-      <div className="group/avatar bottom-[-16px] left-4 absolute">
+      <div
+        className={cn(
+          "group/avatar absolute",
+          type === "avatar" && "bottom-[-16px] left-4"
+        )}
+      >
         <button
           type="button"
           onClick={() => fileInputRef.current?.click()}
           className="block relative"
         >
-          <Image
-            src={src}
-            alt="Avatar preview"
-            width={85}
-            height={85}
-            className="rounded-full object-cover"
-          />
-          <div className="group-hover/avatar:flex hidden absolute inset-0 justify-center items-center bg-black bg-opacity-50 m-auto rounded-full w-10 h-10">
+          {type === "avatar" ? (
+            <Image
+              src={src}
+              alt="Profile avatar"
+              width={85}
+              height={85}
+              className="rounded-full object-cover"
+            />
+          ) : (
+            <Image
+              src={src}
+              alt="Profile banner"
+              width={600}
+              height={150}
+              className="opacity-95"
+            />
+          )}
+          <div className="hidden absolute inset-0 group-hover/avatar:flex justify-center items-center bg-black bg-opacity-50 m-auto rounded-full w-10 h-10">
             <Camera size={24} className="text-white" />
           </div>
         </button>
@@ -61,7 +78,7 @@ export function AvatarInput({ src, onImageCropped }: AvatarInputProps) {
       {imageToCrop && (
         <CropImageDialog
           src={URL.createObjectURL(imageToCrop)}
-          cropAspectRatio={1}
+          cropAspectRatio={type === "avatar" ? 1 : 3}
           onCropped={onImageCropped}
           onClose={() => {
             setImageToCrop(undefined);
@@ -73,4 +90,4 @@ export function AvatarInput({ src, onImageCropped }: AvatarInputProps) {
       )}
     </>
   );
-}
+};

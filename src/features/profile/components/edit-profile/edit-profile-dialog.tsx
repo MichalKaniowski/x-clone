@@ -1,6 +1,7 @@
 "use client";
 
 import avatarPlaceholder from "@/assets/avatar-placeholder.png";
+import bannerPlaceholder from "@/assets/banner-placeholder.png";
 import { useSession } from "@/components/providers/session-provider";
 import { LoadingButton } from "@/components/ui/loading-button";
 import { Button } from "@/components/ui/primitives/button";
@@ -22,17 +23,14 @@ import {
 import { Input } from "@/components/ui/primitives/input";
 import { Textarea } from "@/components/ui/primitives/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { X } from "lucide-react";
-import Image from "next/image";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { TbCameraPlus } from "react-icons/tb";
-import { useUpdateProfileMutation } from "../hooks/use-update-profile";
+import { useUpdateProfileMutation } from "../../hooks/use-update-profile";
 import {
   updateUserProfileSchema,
   UpdateUserProfileValues,
-} from "../validation";
-import { AvatarInput } from "./avatar-input";
+} from "../../validation";
+import { ImageInput } from "./image-input";
 
 export const EditProfileDialog = () => {
   const { user } = useSession();
@@ -46,22 +44,22 @@ export const EditProfileDialog = () => {
   });
   const mutation = useUpdateProfileMutation();
   const [croppedAvatar, setCroppedAvatar] = useState<Blob | null>(null);
+  const [croppedBanner, setCroppedBanner] = useState<Blob | null>(null);
 
   async function onSubmit(values: UpdateUserProfileValues) {
     const newAvatarFile = croppedAvatar
       ? new File([croppedAvatar], `avatar_${user.id}.webp`)
       : undefined;
-    mutation.mutate(
-      {
-        values,
-        avatar: newAvatarFile,
-      },
-      {
-        onSuccess: () => {
-          setCroppedAvatar(null);
-        },
-      }
-    );
+
+    const newBannerFile = croppedBanner
+      ? new File([croppedBanner], `banner_${user.id}.webp`)
+      : undefined;
+
+    mutation.mutate({
+      values,
+      avatar: newAvatarFile,
+      banner: newBannerFile,
+    });
   }
 
   return (
@@ -75,28 +73,24 @@ export const EditProfileDialog = () => {
       <DialogContent className="w-[600px]">
         <DialogTitle>Edit profile</DialogTitle>
         <div className="relative w-full aspect-[3/1] cursor-pointer">
-          <Image
-            src="/images/banner-placeholder.png"
-            alt="banner"
-            fill
-            className="opacity-95"
+          <ImageInput
+            onImageCropped={setCroppedBanner}
+            type="banner"
+            src={
+              croppedBanner
+                ? URL.createObjectURL(croppedBanner)
+                : user.bannerUrl || bannerPlaceholder
+            }
           />
-          <div className="group/banner absolute inset-0 flex justify-center items-center">
-            <div className="group-hover/banner:flex hidden justify-center items-center bg-black bg-opacity-50 ml-2 rounded-full w-10 h-10">
-              <TbCameraPlus className="text-white" size={20} />
-            </div>
-            <div className="group-hover/banner:flex hidden justify-center items-center bg-black bg-opacity-50 rounded-full w-10 h-10">
-              <X className="text-white" size={20} />
-            </div>
-          </div>
 
-          <AvatarInput
+          <ImageInput
+            onImageCropped={setCroppedAvatar}
+            type="avatar"
             src={
               croppedAvatar
                 ? URL.createObjectURL(croppedAvatar)
                 : user.avatarUrl || avatarPlaceholder
             }
-            onImageCropped={setCroppedAvatar}
           />
         </div>
 

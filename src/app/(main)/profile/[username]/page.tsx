@@ -1,12 +1,13 @@
 import { validateRequest } from "@/auth";
 import { Card } from "@/components/ui/primitives/card";
 import { UserAvatar } from "@/components/user-avatar";
-import { EditProfileDialog } from "@/features/profile/components/edit-profile-dialog";
+import { EditProfileDialog } from "@/features/profile/components/edit-profile/edit-profile-dialog";
 import { FollowButton } from "@/features/profile/components/follow-button";
 import { ProfilePosts } from "@/features/profile/components/profile-posts";
 import { ProfileStats } from "@/features/profile/components/profile-stats";
 import prisma from "@/lib/prisma";
 import { getUserDataSelect } from "@/types";
+import Image from "next/image";
 import { redirect } from "next/navigation";
 import { cache } from "react";
 
@@ -54,11 +55,19 @@ export default async function ProfilePage({
   return (
     <div>
       <Card className="p-4">
-        <UserAvatar
-          avatarUrl={user.avatarUrl}
-          size={100}
-          className="mx-auto mb-10"
-        />
+        <div className="relative mb-10">
+          <Image
+            width={600}
+            height={150}
+            src={user.bannerUrl || "/images/banner-placeholder.png"}
+            alt="profile banner"
+          />
+          <UserAvatar
+            avatarUrl={user.avatarUrl}
+            size={100}
+            className="bottom-[-30px] left-4 absolute mx-auto"
+          />
+        </div>
 
         <div className="flex justify-between items-center">
           <h1>{user.displayName}</h1>
