@@ -69,7 +69,7 @@ export const ImageInput = ({ src, type, onImageCropped }: AvatarInputProps) => {
               className="opacity-95"
             />
           )}
-          <div className="hidden absolute inset-0 group-hover/avatar:flex justify-center items-center bg-black bg-opacity-50 m-auto rounded-full w-10 h-10">
+          <div className="absolute inset-0 flex justify-center items-center bg-black bg-opacity-50 group-hover/avatar:opacity-80 m-auto rounded-full w-10 h-10">
             <Camera size={24} className="text-white" />
           </div>
         </button>

@@ -45,6 +45,7 @@ export const EditProfileDialog = () => {
   const mutation = useUpdateProfileMutation();
   const [croppedAvatar, setCroppedAvatar] = useState<Blob | null>(null);
   const [croppedBanner, setCroppedBanner] = useState<Blob | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   async function onSubmit(values: UpdateUserProfileValues) {
     const newAvatarFile = croppedAvatar
@@ -55,22 +56,28 @@ export const EditProfileDialog = () => {
       ? new File([croppedBanner], `banner_${user.id}.webp`)
       : undefined;
 
-    mutation.mutate({
-      values,
-      avatar: newAvatarFile,
-      banner: newBannerFile,
-    });
+    mutation.mutate(
+      {
+        values,
+        avatar: newAvatarFile,
+        banner: newBannerFile,
+      },
+      { onSuccess: () => setIsDialogOpen(false) }
+    );
   }
 
   return (
-    <Dialog>
+    <Dialog
+      open={isDialogOpen}
+      onOpenChange={() => setIsDialogOpen((prevValue) => !prevValue)}
+    >
       <DialogTrigger asChild>
         <Button variant="outline" className="border-foreground/20">
           Edit profile
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="w-[600px]">
+      <DialogContent className="w-[95%] sm:w-[600px]">
         <DialogTitle>Edit profile</DialogTitle>
         <div className="relative w-full aspect-[3/1] cursor-pointer">
           <ImageInput
