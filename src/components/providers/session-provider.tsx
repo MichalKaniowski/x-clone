@@ -10,16 +10,16 @@ interface SessionContext {
 
 const SessionContext = createContext<SessionContext | null>(null);
 
-export default function SessionProvider({
+export const SessionProvider = ({
   children,
   value,
-}: React.PropsWithChildren<{ value: SessionContext }>) {
+}: React.PropsWithChildren<{ value: SessionContext }>) => {
   return (
     <SessionContext.Provider value={value}>{children}</SessionContext.Provider>
   );
-}
+};
 
-export function useSession() {
+export const useSession = () => {
   const context = useContext(SessionContext);
 
   if (!context) {
@@ -27,4 +27,4 @@ export function useSession() {
   }
 
   return context;
-}
+};

@@ -5,7 +5,7 @@ import { EditProfileDialog } from "@/features/profile/components/edit-profile/ed
 import { FollowButton } from "@/features/profile/components/follow-button";
 import { ProfilePosts } from "@/features/profile/components/profile-posts";
 import { ProfileStats } from "@/features/profile/components/profile-stats";
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { getUserDataSelect } from "@/types";
 import Image from "next/image";
 import { redirect } from "next/navigation";

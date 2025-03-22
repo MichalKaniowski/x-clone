@@ -5,11 +5,11 @@ interface InfiniteScrollingContainerProps extends React.PropsWithChildren {
   className?: string;
 }
 
-export default function InfiniteScrollingContainer({
+export const InfiniteScrollingContainer = ({
   children,
   onBottomReached,
   className,
-}: InfiniteScrollingContainerProps) {
+}: InfiniteScrollingContainerProps) => {
   const { ref } = useInView({
     rootMargin: "200px",
     onChange(inView) {
@@ -25,4 +25,4 @@ export default function InfiniteScrollingContainer({
       <div ref={ref} />
     </div>
   );
-}
+};

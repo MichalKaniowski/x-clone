@@ -11,7 +11,7 @@ import { toast } from "sonner";
 import { updateUserProfile } from "../actions/update-user-profile";
 import { UpdateUserProfileValues } from "../validation";
 
-export function useUpdateProfileMutation() {
+export const useUpdateProfileMutation = () => {
   const router = useRouter();
 
   const queryClient = useQueryClient();
@@ -80,4 +80,4 @@ export function useUpdateProfileMutation() {
   });
 
   return mutation;
-}
+};

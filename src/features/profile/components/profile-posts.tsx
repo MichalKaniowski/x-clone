@@ -1,6 +1,6 @@
 "use client";
 
-import InfiniteScrollingContainer from "@/components/infinite-scrolling-container";
+import { InfiniteScrollingContainer } from "@/components/infinite-scrolling-container";
 import { Post } from "@/features/posts/components/post";
 import { Loader2 } from "lucide-react";
 import { useProfilePosts } from "../hooks/use-profile-posts";

@@ -1,16 +1,16 @@
 "use server";
 
 import { lucia } from "@/auth";
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { verify } from "@node-rs/argon2";
 import { isRedirectError } from "next/dist/client/components/redirect";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { LoginValues, loginSchema } from "../validation";
 
-export async function login(
+export const login = async (
   credentials: LoginValues
-): Promise<{ error: string }> {
+): Promise<{ error: string }> => {
   try {
     const { email, password } = loginSchema.parse(credentials);
     const existingUser = await prisma.user.findFirst({
@@ -52,4 +52,4 @@ export async function login(
       error: "Something went wrong. Please try again.",
     };
   }
-}
+};

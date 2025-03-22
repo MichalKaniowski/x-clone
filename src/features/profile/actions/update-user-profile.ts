@@ -1,14 +1,14 @@
 "use server";
 
 import { validateRequest } from "@/auth";
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { getUserDataSelect } from "@/types";
 import {
   updateUserProfileSchema,
   UpdateUserProfileValues,
 } from "../validation";
 
-export async function updateUserProfile(values: UpdateUserProfileValues) {
+export const updateUserProfile = async (values: UpdateUserProfileValues) => {
   const validatedValues = updateUserProfileSchema.parse(values);
 
   const { user } = await validateRequest();
@@ -25,4 +25,4 @@ export async function updateUserProfile(values: UpdateUserProfileValues) {
   });
 
   return updatedUser;
-}
+};

@@ -14,10 +14,10 @@ interface PasswordResetProps {
   resetPasswordLink: string;
 }
 
-export default function ResetPasswordEmail({
+export const ResetPasswordEmail = ({
   userFirstname,
   resetPasswordLink,
-}: PasswordResetProps) {
+}: PasswordResetProps) => {
   return (
     <Html>
       <Head />
@@ -42,7 +42,7 @@ export default function ResetPasswordEmail({
       </Body>
     </Html>
   );
-}
+};
 
 const main = {
   backgroundColor: "#f6f9fc",

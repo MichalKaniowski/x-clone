@@ -1,6 +1,6 @@
 import { google, lucia } from "@/auth";
-import kyInstance from "@/lib/ky";
-import prisma from "@/lib/prisma";
+import { kyInstance } from "@/lib/ky";
+import { prisma } from "@/lib/prisma";
 import { slugify } from "@/lib/utils";
 import { OAuth2RequestError } from "arctic";
 import { generateIdFromEntropySize } from "lucia";

@@ -33,6 +33,10 @@ import {
 import { ImageInput } from "./image-input";
 
 export const EditProfileDialog = () => {
+  const [croppedAvatar, setCroppedAvatar] = useState<Blob | null>(null);
+  const [croppedBanner, setCroppedBanner] = useState<Blob | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const mutation = useUpdateProfileMutation();
   const { user } = useSession();
 
   const form = useForm<UpdateUserProfileValues>({
@@ -42,12 +46,8 @@ export const EditProfileDialog = () => {
       bio: user.bio || "",
     },
   });
-  const mutation = useUpdateProfileMutation();
-  const [croppedAvatar, setCroppedAvatar] = useState<Blob | null>(null);
-  const [croppedBanner, setCroppedBanner] = useState<Blob | null>(null);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-  async function onSubmit(values: UpdateUserProfileValues) {
+  const onSubmit = async (values: UpdateUserProfileValues) => {
     const newAvatarFile = croppedAvatar
       ? new File([croppedAvatar], `avatar_${user.id}.webp`)
       : undefined;
@@ -64,7 +64,7 @@ export const EditProfileDialog = () => {
       },
       { onSuccess: () => setIsDialogOpen(false) }
     );
-  }
+  };
 
   return (
     <Dialog

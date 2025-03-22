@@ -1,5 +1,5 @@
 import { validateRequest } from "@/auth";
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { FollowInfo, getUserDataSelect } from "@/types";
 import { NextRequest } from "next/server";
 

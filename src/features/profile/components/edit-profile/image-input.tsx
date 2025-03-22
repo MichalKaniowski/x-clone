@@ -3,7 +3,7 @@ import { Camera } from "lucide-react";
 import Image, { StaticImageData } from "next/image";
 import { useRef, useState } from "react";
 import Resizer from "react-image-file-resizer";
-import CropImageDialog from "./crop-image-dialog";
+import { CropImageDialog } from "./crop-image-dialog";
 
 interface AvatarInputProps {
   src: string | StaticImageData;
@@ -16,7 +16,7 @@ export const ImageInput = ({ src, type, onImageCropped }: AvatarInputProps) => {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  function onImageSelected(image: File | undefined) {
+  const onImageSelected = (image: File | undefined) => {
     if (!image) return;
 
     Resizer.imageFileResizer(
@@ -29,7 +29,7 @@ export const ImageInput = ({ src, type, onImageCropped }: AvatarInputProps) => {
       (uri) => setImageToCrop(uri as File),
       "file"
     );
-  }
+  };
 
   return (
     <>

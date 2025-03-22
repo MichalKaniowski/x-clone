@@ -1,4 +1,4 @@
-import kyInstance from "@/lib/ky";
+import { kyInstance } from "@/lib/ky";
 import { Feed, PostsPage } from "@/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { postsQueryFactory } from "../posts-query-factory";

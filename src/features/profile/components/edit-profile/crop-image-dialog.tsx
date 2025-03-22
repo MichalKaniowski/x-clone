@@ -17,20 +17,20 @@ interface CropImageDialogProps {
   onClose: () => void;
 }
 
-export default function CropImageDialog({
+export const CropImageDialog = ({
   src,
   cropAspectRatio,
   onCropped,
   onClose,
-}: CropImageDialogProps) {
+}: CropImageDialogProps) => {
   const cropperRef = useRef<ReactCropperElement>(null);
 
-  function crop() {
+  const crop = () => {
     const cropper = cropperRef.current?.cropper;
     if (!cropper) return;
     cropper.getCroppedCanvas().toBlob((blob) => onCropped(blob), "image/webp");
     onClose();
-  }
+  };
 
   return (
     <Dialog open onOpenChange={onClose}>
@@ -55,4 +55,4 @@ export default function CropImageDialog({
       </DialogContent>
     </Dialog>
   );
-}
+};

@@ -1,7 +1,7 @@
 "use server";
 
-import ResetPasswordEmail from "@/emails/reset-password-email";
-import prisma from "@/lib/prisma";
+import { ResetPasswordEmail } from "@/emails/reset-password-email";
+import { prisma } from "@/lib/prisma";
 import { render } from "@react-email/components";
 import sendgrid from "@sendgrid/mail";
 import React from "react";

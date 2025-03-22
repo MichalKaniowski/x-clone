@@ -27,18 +27,18 @@ export const ModalSignupForm = ({ toggleMode }: { toggleMode: () => void }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  async function onSubmit(values: SignUpValues) {
+  const onSubmit = async (values: SignUpValues) => {
     setIsLoading(true);
     setError("");
     const { error } = await signUp(values);
     setIsLoading(false);
     setError(error);
-  }
+  };
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-        <p className="text-center text-destructive">{error}</p>
+        <p className="text-destructive text-center">{error}</p>
 
         <FormField
           control={form.control}

@@ -1,5 +1,5 @@
 import { useSession } from "@/components/providers/session-provider";
-import kyInstance from "@/lib/ky";
+import { kyInstance } from "@/lib/ky";
 import { FollowInfo, UserData } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { profileQueryFactory } from "../profile-query-factory";

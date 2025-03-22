@@ -1,7 +1,7 @@
 "use server";
 
 import { lucia } from "@/auth";
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { generateIdFromEntropySize } from "lucia";
 import { isRedirectError } from "next/dist/client/components/redirect";
 import { cookies } from "next/headers";
@@ -9,9 +9,9 @@ import { redirect } from "next/navigation";
 import { signUpSchema, SignUpValues } from "../validation";
 import { getHashedPassword } from "./get-hashed-password";
 
-export async function signUp(
+export const signUp = async (
   credentials: SignUpValues
-): Promise<{ error: string }> {
+): Promise<{ error: string }> => {
   try {
     const { username, email, password } = signUpSchema.parse(credentials);
 
@@ -74,4 +74,4 @@ export async function signUp(
       error: "Something went wrong. Please try again.",
     };
   }
-}
+};

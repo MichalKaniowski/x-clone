@@ -1,7 +1,7 @@
 "use server";
 
 import { validateRequest } from "@/auth";
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 
 export const followUser = async (userId: string) => {
   const { user: loggedInUser } = await validateRequest();

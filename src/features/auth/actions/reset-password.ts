@@ -1,6 +1,6 @@
 "use server";
 
-import prisma from "@/lib/prisma";
+import { prisma } from "@/lib/prisma";
 import { resetPasswordSchema, ResetPasswordValues } from "../validation";
 import { getHashedPassword } from "./get-hashed-password";
 
