@@ -26,9 +26,6 @@ export const FollowButton = ({ user }: { user: UserData }) => {
     }
   };
 
-  //? maybe do the animation in a way that the text stays in place, and is being replaced by another text
-  //? like it was in the earlier version
-
   return (
     <Button
       onClick={handleClick}
