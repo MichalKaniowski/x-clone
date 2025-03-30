@@ -38,6 +38,7 @@ export const getPostDataInclude = (userId: string) => {
         avatarUrl: true,
       },
     },
+    bookmarks: true,
     likes: {
       where: {
         userId,
@@ -70,4 +71,10 @@ export type FollowInfo = {
   isFollowedByUser: boolean;
 };
 
-export type Feed = "for-you" | "following";
+export interface Feed {
+  queryKey: string[];
+  apiUrl: string;
+}
+export interface BookmarkInfo {
+  isBookmarkedByUser: boolean;
+}

@@ -12,9 +12,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/primitives/dropdown-menu";
 import { UserAvatar } from "@/components/user-avatar";
+import { BookmarkButton } from "@/features/bookmarks/components/bookmark-button";
 import { cn, getTimeAgoString } from "@/lib/utils";
 import { PostData } from "@/types";
-import { Bookmark, Ellipsis, MessageSquare, Trash } from "lucide-react";
+import { Ellipsis, MessageSquare, Trash } from "lucide-react";
 import Link from "next/link";
 import { useDeletePost } from "../hooks/use-delete-post";
 import { LikePostButton } from "./like-post-button";
@@ -86,9 +87,14 @@ export const Post = ({ post }: { post: PostData }) => {
             </button>
           </div>
 
-          <button>
-            <Bookmark size={17} />
-          </button>
+          <BookmarkButton
+            postId={post.id}
+            bookmarkInfo={{
+              isBookmarkedByUser: post.bookmarks.some(
+                (b) => b.userId === user.id
+              ),
+            }}
+          />
         </div>
       </CardFooter>
     </Card>

@@ -11,10 +11,7 @@ export const useLikePost = (postId: string) => {
     mutationFn: likePostAction,
     onMutate: async () => {
       await queryClient.cancelQueries({ queryKey: queryKey });
-      const previousState = queryClient.getQueryData<LikeInfo>([
-        "like-info",
-        postId,
-      ]);
+      const previousState = queryClient.getQueryData<LikeInfo>(queryKey);
 
       queryClient.setQueryData<LikeInfo>(queryKey, () => {
         return {
