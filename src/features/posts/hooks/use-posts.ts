@@ -1,15 +1,14 @@
 import { kyInstance } from "@/lib/ky";
 import { Feed, PostsPage } from "@/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { postsQueryFactory } from "../posts-query-factory";
 
 export const usePosts = (feed: Feed) => {
   return useInfiniteQuery({
-    queryKey: postsQueryFactory.getPosts(feed),
+    queryKey: feed.queryKey,
     queryFn: ({ pageParam }) =>
       kyInstance
         .get(
-          feed === "for-you" ? "/api/posts/for-you" : "/api/posts/following",
+          feed.apiUrl,
           pageParam ? { searchParams: { cursor: pageParam } } : {}
         )
         .json<PostsPage>(),

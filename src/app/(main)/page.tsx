@@ -6,6 +6,16 @@ import {
 } from "@/components/ui/primitives/tabs";
 import { CreatePostForm } from "@/features/posts/components/create-post-form";
 import { Posts } from "@/features/posts/components/posts";
+import { Feed } from "@/types";
+
+const forYouFeed: Feed = {
+  queryKey: ["post-feed", "for-you"],
+  apiUrl: "/api/posts/for-you",
+};
+const followingFeed: Feed = {
+  queryKey: ["post-feed", "following"],
+  apiUrl: "/api/posts/following",
+};
 
 export default async function HomePage() {
   return (
@@ -24,11 +34,11 @@ export default async function HomePage() {
           </TabsList>
 
           <TabsContent value="for-you">
-            <Posts feed="for-you" />
+            <Posts feed={forYouFeed} />
           </TabsContent>
 
           <TabsContent value="following">
-            <Posts feed="following" />
+            <Posts feed={followingFeed} />
           </TabsContent>
         </Tabs>
       </div>
