@@ -1,8 +1,12 @@
 import { Card, CardHeader, CardTitle } from "@/components/ui/primitives/card";
+import { bookmarksQueryFactory } from "@/features/bookmarks/bookmarks-query-factory";
 import { Posts } from "@/features/posts/components/posts";
 import { Feed } from "@/types";
 
-const feed: Feed = { queryKey: ["bookmark-feed"], apiUrl: "/api/bookmarks" };
+const feed: Feed = {
+  queryKey: bookmarksQueryFactory.bookmarks,
+  apiUrl: "/api/bookmarks",
+};
 
 export default function BookmarksPage() {
   return (
