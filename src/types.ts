@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
 
-export const getUserDataSelect = () => {
+export const getUserDataSelect = (loggedInUserId: string) => {
   return {
     id: true,
     username: true,
@@ -11,6 +11,9 @@ export const getUserDataSelect = () => {
     bio: true,
     createdAt: true,
     followers: {
+      where: {
+        followerId: loggedInUserId,
+      },
       select: {
         followerId: true,
       },

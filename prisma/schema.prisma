@@ -50,6 +50,8 @@ model PasswordResetToken {
   expiresAt DateTime
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("password_reset_tokens")
 }
 
 model Post {
@@ -62,6 +64,8 @@ model Post {
   likes     Like[]
   bookmarks Bookmark[]
   comments  Comment[]
+
+  @@map("posts")
 }
 
 model Like {
@@ -74,6 +78,7 @@ model Like {
   post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   @@unique([userId, postId])
+  @@map("likes")
 }
 
 model Follower {
@@ -97,6 +102,7 @@ model Bookmark {
   post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   @@unique([userId, postId])
+  @@map("bookmarks")
 }
 
 model Comment {
@@ -108,4 +114,6 @@ model Comment {
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@map("comments")
 }

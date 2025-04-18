@@ -12,6 +12,7 @@ import { redirect } from "next/navigation";
 import { cache } from "react";
 
 const getUser = cache(async (username: string) => {
+  const { user: loggedInUser } = await validateRequest();
   const user = await prisma.user.findFirst({
     where: {
       username: {
@@ -19,7 +20,7 @@ const getUser = cache(async (username: string) => {
         mode: "insensitive",
       },
     },
-    select: getUserDataSelect(),
+    select: getUserDataSelect(loggedInUser?.id || ""),
   });
 
   return user;
