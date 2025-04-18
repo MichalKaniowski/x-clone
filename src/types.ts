@@ -64,7 +64,18 @@ export type PostsPage = {
 
 export type CommentData = Prisma.CommentGetPayload<{
   include: {
-    user: true;
+    user: {
+      select: {
+        id: true;
+        username: true;
+        displayName: true;
+        email: true;
+        avatarUrl: true;
+        bannerUrl: true;
+        bio: true;
+        createdAt: true;
+      };
+    };
   };
 }>;
 
