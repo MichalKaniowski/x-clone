@@ -21,7 +21,7 @@ export const ProfileImages: React.FC<ProfileImagesProps> = ({
   return (
     <div className="relative w-full aspect-[3/1] cursor-pointer">
       <ImageInput
-        onImageCropped={onSetCroppedAvatar}
+        onImageCropped={onSetCroppedBanner}
         type="banner"
         src={
           croppedBanner
@@ -31,7 +31,7 @@ export const ProfileImages: React.FC<ProfileImagesProps> = ({
       />
 
       <ImageInput
-        onImageCropped={onSetCroppedBanner}
+        onImageCropped={onSetCroppedAvatar}
         type="avatar"
         src={
           croppedAvatar
