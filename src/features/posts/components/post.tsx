@@ -15,16 +15,20 @@ import { UserAvatar } from "@/components/user-avatar";
 import { BookmarkButton } from "@/features/bookmarks/components/bookmark-button";
 import { cn, getTimeAgoString } from "@/lib/utils";
 import { PostData } from "@/types";
-import { Ellipsis, MessageSquare, Trash } from "lucide-react";
+import { Ellipsis, Trash } from "lucide-react";
 import Link from "next/link";
+import { useState } from "react";
 import { useDeletePost } from "../hooks/use-delete-post";
 import { LikePostButton } from "./like-post-button";
+import { PostComments } from "./post-comments";
+import { PostCommentsButton } from "./post-comments-button";
 import { PostProfilePopover } from "./post-profile-popover";
 
 export const Post = ({ post }: { post: PostData }) => {
   const { user } = useSession();
   const { mutate: deletePostMutate, isPending: deletePostPending } =
     useDeletePost();
+  const [areCommentsOpen, setAreCommentsOpen] = useState(false);
 
   return (
     <Card className={cn("relative group", deletePostPending && "opacity-80")}>
@@ -69,7 +73,7 @@ export const Post = ({ post }: { post: PostData }) => {
       <CardContent className="text-sm">{post.content}</CardContent>
 
       <div className="!border-muted border-b" />
-      <CardFooter className="p-3">
+      <CardFooter className="block p-3">
         <div className="flex justify-between items-center w-full h-full">
           <div className="flex items-center gap-3">
             <LikePostButton
@@ -81,10 +85,13 @@ export const Post = ({ post }: { post: PostData }) => {
                 ),
               }}
             />
-            <button className="flex items-center gap-1">
-              <MessageSquare size={16} />
-              <span className="text-sm">3 comments</span>
-            </button>
+            <PostCommentsButton
+              postId={post.id}
+              initialState={{ comments: post._count.comments }}
+              toggleCommentsOpen={() =>
+                setAreCommentsOpen((prevValue) => !prevValue)
+              }
+            />
           </div>
 
           <BookmarkButton
@@ -96,6 +103,12 @@ export const Post = ({ post }: { post: PostData }) => {
             }}
           />
         </div>
+
+        {areCommentsOpen && (
+          <div className="mt-4">
+            <PostComments postId={post.id} />
+          </div>
+        )}
       </CardFooter>
     </Card>
   );

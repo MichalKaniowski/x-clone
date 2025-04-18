@@ -1,6 +1,6 @@
 import { validateRequest } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { LikeInfo } from "@/types";
+import { PostCommentsInfo, getPostDataInclude } from "@/types";
 import { NextRequest } from "next/server";
 
 export async function GET(
@@ -13,18 +13,15 @@ export async function GET(
 
     const post = await prisma.post.findFirst({
       where: { id: postId },
-      include: {
-        likes: { where: { userId: user.id } },
-        _count: { select: { likes: true } },
-      },
+      include: getPostDataInclude(user.id),
     });
 
-    if (!post)
+    if (!post) {
       return Response.json({ error: "Post not found" }, { status: 404 });
+    }
 
-    const data: LikeInfo = {
-      likes: post._count.likes,
-      isLikedByUser: post.likes.some((like) => like.userId === user.id),
+    const data: PostCommentsInfo = {
+      comments: post._count.comments,
     };
 
     return Response.json(data);

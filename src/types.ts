@@ -47,6 +47,7 @@ export const getPostDataInclude = (userId: string) => {
     _count: {
       select: {
         likes: true,
+        comments: true,
       },
     },
   } satisfies Prisma.PostInclude;
@@ -61,7 +62,22 @@ export type PostsPage = {
   nextCursor: string | null;
 };
 
-export type LikeInfo = {
+export type CommentData = Prisma.CommentGetPayload<{
+  include: {
+    user: true;
+  };
+}>;
+
+export type CommentsPage = {
+  comments: CommentData[];
+  nextCursor: string | null;
+};
+
+export type PostCommentsInfo = {
+  comments: number;
+};
+
+export type PostLikesInfo = {
   likes: number;
   isLikedByUser: boolean;
 };
@@ -70,11 +86,11 @@ export type FollowInfo = {
   followers: number;
   isFollowedByUser: boolean;
 };
+export interface BookmarkInfo {
+  isBookmarkedByUser: boolean;
+}
 
 export interface Feed {
   queryKey: string[];
   apiUrl: string;
-}
-export interface BookmarkInfo {
-  isBookmarkedByUser: boolean;
 }

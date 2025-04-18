@@ -1,6 +1,6 @@
 import { kyInstance } from "@/lib/ky";
 import { cn } from "@/lib/utils";
-import { LikeInfo } from "@/types";
+import { PostLikesInfo } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { Heart } from "lucide-react";
 import { useState } from "react";
@@ -12,15 +12,15 @@ export const LikePostButton = ({
   initialState,
 }: {
   postId: string;
-  initialState: LikeInfo;
+  initialState: PostLikesInfo;
 }) => {
   const { mutate: likePostMutate } = useLikePost(postId);
 
   // this will never be called, it's for making state managment easier
-  const { data: likeInfo } = useQuery({
-    queryKey: postsQueryFactory.getLikeInfo(postId),
+  const { data: postLikesInfo } = useQuery({
+    queryKey: postsQueryFactory.getPostLikesInfo(postId),
     queryFn: () =>
-      kyInstance.get(`/api/posts/${postId}/likes`).json<LikeInfo>(),
+      kyInstance.get(`/api/posts/${postId}/likes-info`).json<PostLikesInfo>(),
     initialData: initialState,
     staleTime: Infinity,
   });
@@ -42,11 +42,11 @@ export const LikePostButton = ({
         size={16}
         className={cn(
           "group-hover/button:text-red-500",
-          likeInfo.isLikedByUser && "fill-red-500  text-red-500",
+          postLikesInfo.isLikedByUser && "fill-red-500  text-red-500",
           isAnimating && "animate-like"
         )}
       />
-      <span className="text-sm">{likeInfo.likes} likes</span>
+      <span className="text-sm">{postLikesInfo.likes} likes</span>
     </button>
   );
 };
