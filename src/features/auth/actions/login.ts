@@ -20,23 +20,31 @@ export const login = async (
           mode: "insensitive",
         },
       },
+      select: {
+        id: true,
+        passwordHash: true,
+      },
     });
+
     if (!existingUser || !existingUser.passwordHash) {
       return {
         error: "Incorrect email or password",
       };
     }
+
     const validPassword = await verify(existingUser.passwordHash, password, {
       memoryCost: 19456,
       timeCost: 2,
       outputLen: 32,
       parallelism: 1,
     });
+
     if (!validPassword) {
       return {
         error: "Incorrect email or password",
       };
     }
+
     const session = await lucia.createSession(existingUser.id, {});
     const sessionCookie = lucia.createSessionCookie(session.id);
     (await cookies()).set(
