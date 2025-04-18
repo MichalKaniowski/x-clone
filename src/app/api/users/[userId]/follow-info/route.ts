@@ -16,7 +16,7 @@ export async function GET(
 
     const dbUser = await prisma.user.findUnique({
       where: { id: userId },
-      select: getUserDataSelect(loggedInUser.id),
+      select: getUserDataSelect(),
     });
 
     if (!dbUser)

@@ -1,6 +1,6 @@
 import { validateRequest } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { CommentsPage } from "@/types";
+import { CommentsPage, getUserDataSelect } from "@/types";
 import { NextRequest } from "next/server";
 
 const PAGE_SIZE = 5;
@@ -21,7 +21,9 @@ export async function GET(
         postId,
       },
       include: {
-        user: true,
+        user: {
+          select: getUserDataSelect(),
+        },
       },
       orderBy: { createdAt: "asc" },
       cursor: cursor ? { id: cursor } : undefined,

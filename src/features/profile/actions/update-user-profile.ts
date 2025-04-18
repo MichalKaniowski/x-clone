@@ -19,7 +19,7 @@ export const updateUserProfile = async (values: UpdateUserProfileValues) => {
     const updatedUser = await tx.user.update({
       where: { id: user.id },
       data: validatedValues,
-      select: getUserDataSelect(user.id),
+      select: getUserDataSelect(),
     });
     return updatedUser;
   });

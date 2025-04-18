@@ -2,6 +2,7 @@
 
 import { validateRequest } from "@/auth";
 import { prisma } from "@/lib/prisma";
+import { getUserDataSelect } from "@/types";
 import { commentSchema } from "../validation";
 
 export const createComment = async (content: string, postId: string) => {
@@ -16,7 +17,7 @@ export const createComment = async (content: string, postId: string) => {
       content: validatedContent,
     },
     include: {
-      user: true,
+      user: { select: getUserDataSelect() },
     },
   });
 

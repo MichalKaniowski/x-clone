@@ -58,12 +58,15 @@ export const Post = ({ post }: { post: PostData }) => {
             TriggerComponent={
               <UserAvatar avatarUrl={post.user.avatarUrl} size={34} />
             }
-            post={post}
+            user={post.user}
           />
           <div>
-            <Link href={`/profile/${post.user.username}`}>
-              <p className="font-semibold text-sm">{post.user.displayName}</p>
-            </Link>
+            <PostProfilePopover
+              TriggerComponent={
+                <p className="font-semibold text-sm">{post.user.displayName}</p>
+              }
+              user={post.user}
+            />
             <Link href={`/post/${post.id}`}>
               <p className="text-xs">{getTimeAgoString(post.createdAt)}</p>
             </Link>
@@ -108,7 +111,7 @@ export const Post = ({ post }: { post: PostData }) => {
 
         {areCommentsOpen && (
           <div className="mt-4">
-            <PostComments postId={post.id} />
+            <PostComments post={post} />
           </div>
         )}
       </CardFooter>

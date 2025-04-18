@@ -4,17 +4,16 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { UserAvatar } from "@/components/user-avatar";
-import { PostData } from "@/types";
+import { UserData } from "@/types";
 import { useRouter } from "next/navigation";
 
 export const PostProfilePopover = ({
   TriggerComponent,
-  post,
+  user,
 }: {
   TriggerComponent: React.ReactNode;
-  post: PostData;
+  user: UserData;
 }) => {
-  const user = post.user;
   const router = useRouter();
 
   return (
@@ -36,7 +35,7 @@ export const PostProfilePopover = ({
             @{user.username}
           </p>
         </a>
-        <p className="">Followers: 0</p>
+        <p className="text-sm">Followers: {user._count.followers}</p>
       </HoverCardContent>
     </HoverCard>
   );

@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/primitives/button";
 import { Input } from "@/components/ui/primitives/input";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
-import { CommentData } from "@/types";
+import { CommentData, PostData } from "@/types";
 import { Loader2, SendHorizontal } from "lucide-react";
 import { useRef } from "react";
 import { toast } from "sonner";
@@ -10,7 +10,7 @@ import { useComments } from "../hooks/use-comments";
 import { useCreateComment } from "../hooks/use-create-comment";
 import { Comment } from "./comment";
 
-export const PostComments = ({ postId }: { postId: string }) => {
+export const PostComments = ({ post }: { post: PostData }) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const { mutate: createComment } = useCreateComment();
   const {
@@ -20,7 +20,7 @@ export const PostComments = ({ postId }: { postId: string }) => {
     hasNextPage,
     isError,
     fetchNextPage,
-  } = useComments(postId);
+  } = useComments(post.id);
   const comments: CommentData[] =
     commentsData?.pages.flatMap((page) => page.comments) || [];
 
@@ -33,7 +33,7 @@ export const PostComments = ({ postId }: { postId: string }) => {
       return;
     }
 
-    await createComment({ comment: inputValue, postId });
+    await createComment({ comment: inputValue, postId: post.id });
     if (inputRef?.current) inputRef.current.value = "";
   };
 
@@ -82,7 +82,7 @@ export const PostComments = ({ postId }: { postId: string }) => {
         {comments.map((comment) => {
           return (
             <div key={comment.id} className="space-y-2">
-              <Comment comment={comment} />
+              <Comment postId={post.id} comment={comment} />
               <Separator />
             </div>
           );
