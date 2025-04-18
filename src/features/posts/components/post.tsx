@@ -11,6 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/primitives/dropdown-menu";
+import { Separator } from "@/components/ui/separator";
 import { UserAvatar } from "@/components/user-avatar";
 import { BookmarkButton } from "@/features/bookmarks/components/bookmark-button";
 import { cn, getTimeAgoString } from "@/lib/utils";
@@ -72,7 +73,8 @@ export const Post = ({ post }: { post: PostData }) => {
 
       <CardContent className="text-sm">{post.content}</CardContent>
 
-      <div className="!border-muted border-b" />
+      <Separator />
+
       <CardFooter className="block p-3">
         <div className="flex justify-between items-center w-full h-full">
           <div className="flex items-center gap-3">

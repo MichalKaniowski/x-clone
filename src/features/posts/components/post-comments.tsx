@@ -83,7 +83,7 @@ export const PostComments = ({ postId }: { postId: string }) => {
           return (
             <div key={comment.id} className="space-y-2">
               <Comment comment={comment} />
-              <Separator className="w-full h-[1px]" />
+              <Separator />
             </div>
           );
         })}
