@@ -5,7 +5,7 @@ import { CommentData } from "@/types";
 export const Comment = ({ comment }: { comment: CommentData }) => {
   return (
     <div className="flex items-center gap-3">
-      <UserAvatar size={34} />
+      <UserAvatar avatarUrl={comment.user.avatarUrl} size={34} />
       <div>
         <div className="space-x-1">
           <span className="font-semibold text-sm">
