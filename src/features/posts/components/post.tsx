@@ -1,3 +1,5 @@
+"use client";
+
 import { useSession } from "@/components/providers/session-provider";
 import {
   Card,
@@ -25,11 +27,19 @@ import { PostComments } from "./post-comments";
 import { PostCommentsButton } from "./post-comments-button";
 import { PostProfilePopover } from "./post-profile-popover";
 
-export const Post = ({ post }: { post: PostData }) => {
+export const Post = ({
+  post,
+  areCommentsOpenInitially = false,
+}: {
+  post: PostData;
+  areCommentsOpenInitially?: boolean;
+}) => {
   const { user } = useSession();
   const { mutate: deletePostMutate, isPending: deletePostPending } =
     useDeletePost();
-  const [areCommentsOpen, setAreCommentsOpen] = useState(false);
+  const [areCommentsOpen, setAreCommentsOpen] = useState(
+    areCommentsOpenInitially
+  );
 
   return (
     <Card className={cn("relative group", deletePostPending && "opacity-80")}>
