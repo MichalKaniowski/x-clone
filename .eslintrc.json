@@ -1,3 +1,7 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"]
+  "extends": ["next/core-web-vitals", "next/typescript"],
+  "plugins": ["react-you-might-not-need-an-effect"],
+  "rules": {
+    "react-you-might-not-need-an-effect/you-might-not-need-an-effect": "warn"
+  }
 }
