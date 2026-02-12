@@ -1,11 +1,7 @@
 import { toggleBookmark } from "@/features/bookmarks/actions/toggle-bookmark";
 import { bookmarksQueryFactory } from "@/features/bookmarks/bookmarks-query-factory";
-import { BookmarkInfo, PostData, PostsPage } from "@/types";
-import {
-  InfiniteData,
-  useMutation,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { BookmarkInfo, PostsPage } from "@/types";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 export const useToggleBookmark = (postId: string) => {
@@ -16,75 +12,54 @@ export const useToggleBookmark = (postId: string) => {
     mutationFn: toggleBookmark,
     onMutate: async () => {
       await queryClient.cancelQueries({ queryKey: bookmarkInfoQueryKey });
-      await queryClient.cancelQueries({
-        queryKey: bookmarksQueryFactory.bookmarks,
-      });
 
       const previousBookmarkInfo =
         queryClient.getQueryData<BookmarkInfo>(bookmarkInfoQueryKey);
-      const previousBookmarks = queryClient.getQueryData<
-        InfiniteData<PostsPage, string | null>
-      >(bookmarksQueryFactory.bookmarks);
 
-      toast.success(
-        `Post ${previousBookmarkInfo?.isBookmarkedByUser ? "removed from" : "added to"} bookmarks`,
-      );
+      const isBookmarked = previousBookmarkInfo?.isBookmarkedByUser ?? false;
 
       queryClient.setQueryData<BookmarkInfo>(bookmarkInfoQueryKey, {
-        isBookmarkedByUser: !previousBookmarkInfo?.isBookmarkedByUser,
+        isBookmarkedByUser: !isBookmarked,
       });
 
-      if (!previousBookmarkInfo?.isBookmarkedByUser) {
-        const feedQueries = queryClient.getQueriesData<
-          InfiniteData<PostsPage, string | null>
-        >({
-          predicate: (query) => query.queryKey[0] === "post-feed",
+      if (isBookmarked) {
+        await queryClient.cancelQueries({
+          queryKey: bookmarksQueryFactory.bookmarks,
         });
 
-        let postData: PostData | undefined;
+        queryClient.setQueriesData<PostsPage>(
+          { queryKey: bookmarksQueryFactory.bookmarks },
+          (oldData) => {
+            if (!oldData || !oldData.posts) return oldData;
 
-        for (const [_, data] of feedQueries) {
-          if (data) {
-            for (const page of data.pages) {
-              postData = page.posts.find((p) => p.id === postId);
-              if (postData) break;
-            }
+            return {
+              ...oldData,
+              posts: oldData.posts.filter((post) => post.id !== postId),
+            };
           }
-          if (postData) break;
-        }
-
-        if (postData) {
-          queryClient.setQueryData<InfiniteData<PostsPage, string | null>>(
-            bookmarksQueryFactory.bookmarks,
-            (oldData) => {
-              if (!oldData) return oldData;
-              return {
-                pageParams: oldData.pageParams,
-                pages: oldData.pages.map((page, idx) =>
-                  idx === 0
-                    ? {
-                        nextCursor: page.nextCursor,
-                        posts: [postData, ...page.posts],
-                      }
-                    : page,
-                ),
-              };
-            },
-          );
-        }
+        );
       }
 
-      return { previousBookmarkInfo, previousBookmarks };
+      toast.success(
+        `Post ${isBookmarked ? "removed from" : "added to"} bookmarks`
+      );
+
+      return { previousBookmarkInfo, isBookmarked };
     },
     onError: (error, variables, context) => {
       queryClient.setQueryData(
         bookmarkInfoQueryKey,
-        context?.previousBookmarkInfo,
+        context?.previousBookmarkInfo
       );
-      queryClient.setQueryData(
-        bookmarksQueryFactory.bookmarks,
-        context?.previousBookmarks,
-      );
+      toast.error("Failed to update bookmark");
+    },
+    onSuccess: async (_, __, context) => {
+      await queryClient.resetQueries({ queryKey: bookmarkInfoQueryKey });
+      if (!context?.isBookmarked) {
+        queryClient.removeQueries({
+          queryKey: bookmarksQueryFactory.bookmarks,
+        });
+      }
     },
   });
 };
