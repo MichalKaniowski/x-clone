@@ -3,9 +3,9 @@
 import { validateRequest } from "@/auth";
 import { prisma } from "@/lib/prisma";
 
-export const likePost = async (postId: string) => {
+export const toggleLikePost = async (postId: string) => {
   const { user } = await validateRequest();
-  if (!user) throw new Error("Unathorized");
+  if (!user) throw new Error("Unauthorized");
 
   const existingLike = await prisma.like.findFirst({
     where: {

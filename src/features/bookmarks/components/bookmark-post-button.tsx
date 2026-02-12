@@ -6,21 +6,21 @@ import { Bookmark } from "lucide-react";
 import { bookmarksQueryFactory } from "../bookmarks-query-factory";
 import { useToggleBookmark } from "../hooks/use-toggle-bookmark";
 
-interface BookmarkButtonProps {
+interface BookmarkPostButtonProps {
   bookmarkInfo: BookmarkInfo;
   postId: string;
 }
 
-export const BookmarkButton = ({
+export const BookmarkPostButton = ({
   bookmarkInfo,
   postId,
-}: BookmarkButtonProps) => {
+}: BookmarkPostButtonProps) => {
   // this will never be called, it's for making state managment easier
   const { data: bookmarkInfoData } = useQuery({
     queryKey: bookmarksQueryFactory.getBookmarkInfo(postId),
     queryFn: () =>
       kyInstance
-        .get(`/api/posts/${postId}/isBookmarkedByUser`)
+        .get(`/api/posts/${postId}/bookmarks-info`)
         .json<BookmarkInfo>(),
     initialData: bookmarkInfo,
     staleTime: Infinity,

@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/primitives/dropdown-menu";
 import { Separator } from "@/components/ui/separator";
 import { UserAvatar } from "@/components/user-avatar";
-import { BookmarkButton } from "@/features/bookmarks/components/bookmark-button";
+import { BookmarkPostButton } from "@/features/bookmarks/components/bookmark-post-button";
 import { cn, getTimeAgoString } from "@/lib/utils";
 import { PostData } from "@/types";
 import { Ellipsis, Trash } from "lucide-react";
@@ -42,7 +42,7 @@ export const Post = ({
   );
 
   return (
-    <Card className={cn("relative group", deletePostPending && "opacity-80")}>
+    <Card className={cn("group relative", deletePostPending && "opacity-80")}>
       <div className="top-3 right-5 absolute opacity-0 group-hover:opacity-100 transition-opacity">
         {user.id === post.userId && (
           <DropdownMenu>
@@ -109,7 +109,7 @@ export const Post = ({
             />
           </div>
 
-          <BookmarkButton
+          <BookmarkPostButton
             postId={post.id}
             bookmarkInfo={{
               isBookmarkedByUser: post.bookmarks.some(

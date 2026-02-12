@@ -1,8 +1,8 @@
 import { validateRequest } from "@/auth";
 import { Card } from "@/components/ui/primitives/card";
 import { UserAvatar } from "@/components/user-avatar";
-import { EditProfileDialog } from "@/features/profile/components/edit-profile/edit-profile-dialog";
-import { FollowButton } from "@/features/profile/components/follow-button";
+import { UpdateProfileDialog } from "@/features/profile/components/update-profile/update-profile-dialog";
+import { FollowUserButton } from "@/features/profile/components/follow-user-button";
 import { ProfilePosts } from "@/features/profile/components/profile-posts";
 import { ProfileStats } from "@/features/profile/components/profile-stats";
 import { prisma } from "@/lib/prisma";
@@ -72,9 +72,9 @@ export default async function ProfilePage({
         <div className="flex justify-between items-center">
           <h1>{user.displayName}</h1>
           {loggedInUser.id === user.id ? (
-            <EditProfileDialog />
+            <UpdateProfileDialog />
           ) : (
-            <FollowButton user={user} />
+            <FollowUserButton user={user} />
           )}
         </div>
         <p className="mt-[-3px] mb-4 text-muted-foreground">@{user.username}</p>

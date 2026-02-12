@@ -1,6 +1,6 @@
 import { PostLikesInfo } from "@/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { likePost as likePostAction } from "../actions/like-post";
+import { toggleLikePost } from "../actions/toggle-like-post";
 import { postsQueryFactory } from "../posts-query-factory";
 
 export const useLikePost = (postId: string) => {
@@ -8,7 +8,7 @@ export const useLikePost = (postId: string) => {
   const queryKey = postsQueryFactory.getPostLikesInfo(postId);
 
   return useMutation({
-    mutationFn: likePostAction,
+    mutationFn: toggleLikePost,
     onMutate: async () => {
       await queryClient.cancelQueries({ queryKey: queryKey });
       const previousState = queryClient.getQueryData<PostLikesInfo>(queryKey);

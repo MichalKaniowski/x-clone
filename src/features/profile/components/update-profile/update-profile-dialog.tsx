@@ -19,7 +19,7 @@ import {
 import { ProfileForm } from "./profile-form";
 import { ProfileImages } from "./profile-images";
 
-export const EditProfileDialog = () => {
+export const UpdateProfileDialog = () => {
   const [croppedAvatar, setCroppedAvatar] = useState<Blob | null>(null);
   const [croppedBanner, setCroppedBanner] = useState<Blob | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -49,7 +49,7 @@ export const EditProfileDialog = () => {
         avatar: newAvatarFile,
         banner: newBannerFile,
       },
-      { onSuccess: () => setIsDialogOpen(false) }
+      { onSuccess: () => setIsDialogOpen(false) },
     );
   };
 
@@ -60,12 +60,12 @@ export const EditProfileDialog = () => {
     >
       <DialogTrigger asChild>
         <Button variant="outline" className="border-foreground/20">
-          Edit profile
+          Update profile
         </Button>
       </DialogTrigger>
 
       <DialogContent className="w-[95%] sm:w-[600px]">
-        <DialogTitle>Edit profile</DialogTitle>
+        <DialogTitle>Update profile</DialogTitle>
         <ProfileImages
           croppedAvatar={croppedAvatar}
           croppedBanner={croppedBanner}

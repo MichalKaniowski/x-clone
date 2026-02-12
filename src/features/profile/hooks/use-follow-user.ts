@@ -1,4 +1,4 @@
-import { followUser } from "@/features/profile/actions/follow-user";
+import { toggleFollowUser } from "@/features/profile/actions/toggle-follow-user";
 import { FollowInfo } from "@/types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { profileQueryFactory } from "../profile-query-factory";
@@ -8,7 +8,7 @@ export const useFollowUser = (userId: string) => {
   const queryKey = profileQueryFactory.getFollowInfo(userId);
 
   return useMutation({
-    mutationFn: followUser,
+    mutationFn: toggleFollowUser,
     onMutate: async () => {
       await queryClient.cancelQueries({ queryKey: queryKey });
 

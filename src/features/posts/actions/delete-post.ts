@@ -5,12 +5,12 @@ import { prisma } from "@/lib/prisma";
 
 export const deletePost = async (postId: string) => {
   const { user } = await validateRequest();
-  if (!user) throw new Error("Unathorized");
+  if (!user) throw new Error("Unauthorized");
 
   const post = await prisma.post.findFirst({ where: { id: postId } });
   if (!post) throw new Error("Post not found");
 
-  if (post.userId !== user.id) throw new Error("Unathorized");
+  if (post.userId !== user.id) throw new Error("Unauthorized");
 
   const deletedPost = await prisma.post.delete({ where: { id: postId } });
   return deletedPost;

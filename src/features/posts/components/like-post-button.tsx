@@ -7,13 +7,15 @@ import { useState } from "react";
 import { useLikePost } from "../hooks/use-like-post";
 import { postsQueryFactory } from "../posts-query-factory";
 
+interface LikePostButtonProps {
+  postId: string;
+  initialState: PostLikesInfo;
+}
+
 export const LikePostButton = ({
   postId,
   initialState,
-}: {
-  postId: string;
-  initialState: PostLikesInfo;
-}) => {
+}: LikePostButtonProps) => {
   const { mutate: likePostMutate } = useLikePost(postId);
 
   // this will never be called, it's for making state managment easier
@@ -43,7 +45,7 @@ export const LikePostButton = ({
         className={cn(
           "group-hover/button:text-red-500",
           postLikesInfo.isLikedByUser && "fill-red-500  text-red-500",
-          isAnimating && "animate-like"
+          isAnimating && "animate-like",
         )}
       />
       <span className="text-sm">{postLikesInfo.likes} likes</span>

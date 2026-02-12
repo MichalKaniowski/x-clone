@@ -7,7 +7,7 @@ import { createPostSchema, CreatePostValues } from "./../validation";
 
 export const createPost = async (data: CreatePostValues): Promise<PostData> => {
   const { user } = await validateRequest();
-  if (!user) throw new Error("Unathorized");
+  if (!user) throw new Error("Unauthorized");
 
   const validatedData = createPostSchema.safeParse(data);
 

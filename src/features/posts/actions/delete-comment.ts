@@ -12,7 +12,7 @@ export const deleteComment = async (commentId: string) => {
     where: { id: commentId },
   });
   if (!comment || user.id !== comment.userId) {
-    throw new Error("Unathorized");
+    throw new Error("Unauthorized");
   }
 
   const deletedComment = await prisma.comment.delete({

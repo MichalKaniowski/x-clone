@@ -3,9 +3,9 @@
 import { validateRequest } from "@/auth";
 import { prisma } from "@/lib/prisma";
 
-export const followUser = async (userId: string) => {
+export const toggleFollowUser = async (userId: string) => {
   const { user: loggedInUser } = await validateRequest();
-  if (!loggedInUser) throw new Error("Unathorized");
+  if (!loggedInUser) throw new Error("Unauthorized");
 
   const existingFollow = await prisma.follower.findFirst({
     where: {

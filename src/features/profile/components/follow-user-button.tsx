@@ -7,7 +7,11 @@ import { useState } from "react";
 import { useFollowInfo } from "../hooks/use-follow-info";
 import { useFollowUser } from "../hooks/use-follow-user";
 
-export const FollowButton = ({ user }: { user: UserData }) => {
+interface FollowUserButtonProps {
+  user: UserData;
+}
+
+export const FollowUserButton = ({ user }: FollowUserButtonProps) => {
   const [isAnimating, setIsAnimating] = useState(false);
 
   const {

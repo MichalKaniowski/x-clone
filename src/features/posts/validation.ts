@@ -9,4 +9,4 @@ export type CreatePostValues = z.infer<typeof createPostSchema>;
 export const commentSchema = z.object({
   content: customRequiredString("Comment content is required"),
 });
-export type CommentValues = z.infer<typeof createPostSchema>;
+export type CommentValues = z.infer<typeof commentSchema>;
