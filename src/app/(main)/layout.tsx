@@ -3,7 +3,7 @@ import { MenuBar } from "@/components/menu-bar";
 import { Navbar } from "@/components/navbar";
 import { ReactQueryProvider } from "@/components/providers/react-query-provider";
 import { SessionProvider } from "@/components/providers/session-provider";
-import { WhoToFollow } from "@/components/who-to-follow";
+import { TrendsSidebar } from "@/components/trends-sidebar";
 import { redirect } from "next/navigation";
 
 export default async function MainLayout({
@@ -30,7 +30,7 @@ export default async function MainLayout({
             <div className="flex-[2]">{children}</div>
 
             <div className="hidden lg:block flex-1">
-              <WhoToFollow />
+              <TrendsSidebar />
             </div>
           </div>
         </div>
