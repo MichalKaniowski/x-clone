@@ -15,23 +15,40 @@ export const followUser = async (userId: string) => {
   });
 
   if (existingFollow) {
-    const follow = await prisma.follower.delete({
-      where: {
-        followerId_followingId: {
+    const [follow] = await prisma.$transaction([
+      prisma.follower.deleteMany({
+        where: {
           followerId: loggedInUser.id,
           followingId: userId,
         },
-      },
-    });
+      }),
+      prisma.notification.deleteMany({
+        where: {
+          issuerId: loggedInUser.id,
+          recipientId: userId,
+          type: "FOLLOW",
+        },
+      }),
+    ]);
+
     return follow;
   }
 
-  const createdFollow = await prisma.follower.create({
-    data: {
-      followerId: loggedInUser.id,
-      followingId: userId,
-    },
-  });
+  const [createdFollow] = await prisma.$transaction([
+    prisma.follower.create({
+      data: {
+        followerId: loggedInUser.id,
+        followingId: userId,
+      },
+    }),
+    prisma.notification.create({
+      data: {
+        issuerId: loggedInUser.id,
+        recipientId: userId,
+        type: "FOLLOW",
+      },
+    }),
+  ]);
 
   return createdFollow;
 };

@@ -33,7 +33,7 @@ export const PostComments = ({ post }: { post: PostData }) => {
       return;
     }
 
-    await createComment({ comment: inputValue, postId: post.id });
+    await createComment({ comment: inputValue, post });
     if (inputRef?.current) inputRef.current.value = "";
   };
 
@@ -55,7 +55,7 @@ export const PostComments = ({ post }: { post: PostData }) => {
             onClick={() => fetchNextPage()}
             className={cn(
               "w-full font-semibold text-primary text-sm text-center",
-              isFetchingNextPage && "opacity-80"
+              isFetchingNextPage && "opacity-80",
             )}
             disabled={isFetchingNextPage}
           >

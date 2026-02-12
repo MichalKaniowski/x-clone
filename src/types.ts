@@ -33,7 +33,7 @@ export const getPostDataInclude = (userId: string) => {
     user: {
       select: getUserDataSelect(),
     },
-    bookmarks: {where: {userId}, select: {userId: true}},
+    bookmarks: { where: { userId }, select: { userId: true } },
     likes: {
       where: {
         userId,
@@ -70,6 +70,30 @@ export type CommentsPage = {
   nextCursor: string | null;
 };
 
+export const notificationsInclude = {
+  issuer: {
+    select: {
+      username: true,
+      displayName: true,
+      avatarUrl: true,
+    },
+  },
+  post: {
+    select: {
+      content: true,
+    },
+  },
+} satisfies Prisma.NotificationInclude;
+
+export type NotificationData = Prisma.NotificationGetPayload<{
+  include: typeof notificationsInclude;
+}>;
+
+export interface NotificationsPage {
+  notifications: NotificationData[];
+  nextCursor: string | null;
+}
+
 export type PostCommentsInfo = {
   comments: number;
 };
@@ -90,4 +114,8 @@ export interface BookmarkInfo {
 export interface Feed {
   queryKey: string[];
   apiUrl: string;
+}
+
+export interface NotificationsCountInfo {
+  unreadCount: number;
 }

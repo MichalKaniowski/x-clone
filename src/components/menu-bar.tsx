@@ -1,5 +1,6 @@
 "use client";
 
+import { NotificationsMenuItem } from "@/features/notifications/components/notifications-menu-item";
 import { cn } from "@/lib/utils";
 import { Bell, Bookmark, House, Mail } from "lucide-react";
 import Link from "next/link";
@@ -18,19 +19,23 @@ export const MenuBar = () => {
   return (
     <div className="bg-card px-3 py-2 rounded-xl">
       {MENU_BAR_ITEMS.map((item) => {
-        return (
-          <Link
-            key={item.name}
-            href={item.href}
-            className={cn(
-              "flex items-center gap-3 hover:opacity-70 p-3 rounded-xl",
-              pathname === item.href && "bg-foreground/5"
-            )}
-          >
-            {item.icon}
-            {item.name}
-          </Link>
-        );
+        if (item.name !== "Notifications") {
+          return (
+            <Link
+              key={item.name}
+              href={item.href}
+              className={cn(
+                "flex items-center gap-3 hover:opacity-70 p-3 rounded-xl",
+                pathname === item.href && "bg-foreground/5",
+              )}
+            >
+              {item.icon}
+              {item.name}
+            </Link>
+          );
+        }
+
+        return <NotificationsMenuItem key={item.name} item={item} />;
       })}
     </div>
   );

@@ -1,4 +1,4 @@
-import { CommentsPage, PostCommentsInfo } from "@/types";
+import { CommentsPage, PostCommentsInfo, PostData } from "@/types";
 import {
   InfiniteData,
   useMutation,
@@ -11,14 +11,14 @@ export const useCreateComment = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ comment, postId }: { comment: string; postId: string }) =>
-      createComment(comment, postId),
+    mutationFn: ({ comment, post }: { comment: string; post: PostData }) =>
+      createComment(comment, post),
     onSuccess: async (createdComment) => {
       const commentsQueryKey = postsQueryFactory.getComments(
-        createdComment.postId
+        createdComment.postId,
       );
       const postCommentsInfoQueryKey = postsQueryFactory.getPostCommentsInfo(
-        createdComment.postId
+        createdComment.postId,
       );
       await Promise.all([
         queryClient.cancelQueries({
@@ -37,7 +37,7 @@ export const useCreateComment = () => {
           return {
             comments: oldData.comments + 1,
           };
-        }
+        },
       );
 
       queryClient.setQueryData<InfiniteData<CommentsPage, string | null>>(
@@ -58,7 +58,7 @@ export const useCreateComment = () => {
               return page;
             }),
           };
-        }
+        },
       );
     },
   });

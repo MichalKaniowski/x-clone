@@ -20,14 +20,17 @@ model User {
   passwordHash String?
   createdAt    DateTime @default(now())
 
-  passwordResetTokens PasswordResetToken[]
-  sessions            Session[]
-  posts               Post[]
-  likes               Like[]
-  followers           Follower[]           @relation("Followers")
-  following           Follower[]           @relation("Following")
-  bookmarks           Bookmark[]
-  comments            Comment[]
+  passwordResetTokens   PasswordResetToken[]
+  sessions              Session[]
+  posts                 Post[]
+  likes                 Like[]
+  followers             Follower[]           @relation("Followers")
+  following             Follower[]           @relation("Following")
+  bookmarks             Bookmark[]
+  comments              Comment[]
+  notifications         Notification[]
+  receivedNotifications Notification[]       @relation("Recipient")
+  issuedNotifications   Notification[]       @relation("Issuer")
 
   @@map("users")
 }
@@ -61,9 +64,10 @@ model Post {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
 
-  likes     Like[]
-  bookmarks Bookmark[]
-  comments  Comment[]
+  likes         Like[]
+  bookmarks     Bookmark[]
+  comments      Comment[]
+  notifications Notification[]
 
   @@map("posts")
 }
@@ -116,4 +120,28 @@ model Comment {
   post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   @@map("comments")
+}
+
+enum NotificationType {
+  LIKE
+  FOLLOW
+  COMMENT
+}
+
+model Notification {
+  id          String           @id @default(cuid())
+  recipientId String
+  issuerId    String
+  postId      String?
+  type        NotificationType
+  read        Boolean          @default(false)
+  createdAt   DateTime         @default(now())
+
+  recipient User    @relation("Recipient", fields: [recipientId], references: [id], onDelete: Cascade)
+  issuer    User    @relation("Issuer", fields: [issuerId], references: [id], onDelete: Cascade)
+  post      Post?   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User?   @relation(fields: [userId], references: [id])
+  userId    String?
+
+  @@map("notifications")
 }
