@@ -79,8 +79,6 @@ const WhoToFollow = async () => {
 const TrendingTopics = async () => {
   const trendingTopics = await getTrendingTopics();
 
-  console.log(trendingTopics);
-
   return (
     <div className="space-y-5 bg-card shadow-sm p-5 rounded-2xl">
       <div className="font-bold text-lg">Trending topics</div>
@@ -88,7 +86,7 @@ const TrendingTopics = async () => {
         const title = hashtag.split("#")[1];
 
         return (
-          <Link key={title} href={`/hashtag/${title}`} className="block">
+          <Link key={title} href={`/search?q=${title}`} className="block">
             <p
               className="font-semibold hover:underline break-all line-clamp-1"
               title={hashtag}

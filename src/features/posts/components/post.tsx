@@ -1,5 +1,6 @@
 "use client";
 
+import Linkify from "@/components/linkify";
 import { useSession } from "@/components/providers/session-provider";
 import {
   Card,
@@ -84,7 +85,9 @@ export const Post = ({
         </div>
       </CardHeader>
 
-      <CardContent className="text-sm">{post.content}</CardContent>
+      <CardContent className="text-sm">
+        <Linkify>{post.content}</Linkify>
+      </CardContent>
 
       <Separator />
 
