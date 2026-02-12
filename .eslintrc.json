@@ -2,6 +2,10 @@
   "extends": ["next/core-web-vitals", "next/typescript"],
   "plugins": ["react-you-might-not-need-an-effect"],
   "rules": {
-    "react-you-might-not-need-an-effect/you-might-not-need-an-effect": "warn"
+    "react-you-might-not-need-an-effect/you-might-not-need-an-effect": "warn",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { "varsIgnorePattern": "^_", "argsIgnorePattern": "^_" }
+    ]
   }
 }

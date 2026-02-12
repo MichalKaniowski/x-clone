@@ -33,7 +33,7 @@ export const getPostDataInclude = (userId: string) => {
     user: {
       select: getUserDataSelect(),
     },
-    bookmarks: true,
+    bookmarks: {where: {userId}, select: {userId: true}},
     likes: {
       where: {
         userId,

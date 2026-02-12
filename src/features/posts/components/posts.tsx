@@ -12,6 +12,7 @@ interface PostsProps {
 
 export const Posts = ({ feed }: PostsProps) => {
   const { data, fetchNextPage, hasNextPage, isFetching } = usePosts(feed);
+  const numberOfPosts = data?.pages.flatMap((page) => page.posts).length || 0;
 
   return (
     <InfiniteScrollingContainer
@@ -26,7 +27,13 @@ export const Posts = ({ feed }: PostsProps) => {
       <div className="mt-8">
         {isFetching && <Loader2 className="mx-auto animate-spin" />}
         {!isFetching && !hasNextPage && (
-          <p className="text-center">No more posts to load</p>
+          <>
+            {numberOfPosts > 0 ? (
+              <p className="text-center">No more posts to load</p>
+            ) : (
+              <p className="text-center">No posts to load</p>
+            )}
+          </>
         )}
       </div>
     </InfiniteScrollingContainer>
