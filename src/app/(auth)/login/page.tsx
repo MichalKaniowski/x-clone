@@ -1,6 +1,11 @@
 import { Logo } from "@/components/logo";
 import { AuthModal } from "@/features/auth/components/auth-modal/auth-modal";
 import { GoogleLoginButton } from "@/features/auth/components/google-login-button";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Login",
+};
 
 export default function LoginPage() {
   return (

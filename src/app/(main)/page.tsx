@@ -7,6 +7,11 @@ import {
 import { CreatePostForm } from "@/features/posts/components/create-post-form";
 import { Posts } from "@/features/posts/components/posts";
 import { Feed } from "@/types";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Home",
+};
 
 const forYouFeed: Feed = {
   queryKey: ["post-feed", "for-you"],

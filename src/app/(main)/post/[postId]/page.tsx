@@ -1,8 +1,33 @@
 import { validateRequest } from "@/auth";
 import { Post } from "@/features/posts/components/post";
 import { prisma } from "@/lib/prisma";
-import { getPostDataInclude } from "@/types";
+import { getPostDataInclude, getUserDataSelect } from "@/types";
 import { redirect } from "next/navigation";
+import { Metadata } from "next";
+
+export const generateMetadata = async ({
+  params,
+}: {
+  params: Promise<{ postId: string }>;
+}): Promise<Metadata> => {
+  const { postId } = await params;
+
+  const post = await prisma.post.findUnique({
+    where: { id: postId },
+    select: {
+      content: true,
+      user: {
+        select: getUserDataSelect(),
+      },
+    },
+  });
+
+  if (!post) return { title: "Post" };
+
+  return {
+    title: `Post by @${post.user.username}`,
+  };
+};
 
 export default async function PostPage({
   params,
