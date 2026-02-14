@@ -54,7 +54,6 @@ export const useToggleBookmark = (postId: string) => {
       toast.error("Failed to update bookmark");
     },
     onSuccess: async (_, __, context) => {
-      await queryClient.resetQueries({ queryKey: bookmarkInfoQueryKey });
       if (!context?.isBookmarked) {
         queryClient.removeQueries({
           queryKey: bookmarksQueryFactory.bookmarks,
