@@ -61,9 +61,11 @@ const WhoToFollow = async () => {
             />
           </div>
           <div className="flex-1 text-left">
-            <p className="font-semibold text-sm hover:underline break-all line-clamp-1">
-              {user.displayName}
-            </p>
+            <Link href={`/profile/${user.username}`} className="block">
+              <p className="font-semibold text-sm hover:underline break-all line-clamp-1">
+                {user.displayName}
+              </p>
+            </Link>
             <p className="text-muted-foreground text-sm break-all line-clamp-1">
               @{user.username}
             </p>
