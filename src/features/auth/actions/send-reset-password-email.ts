@@ -48,7 +48,7 @@ export const sendResetPasswordEmail = async (values: ForgotPasswordValues) => {
       return { error: "Something went wrong while sending an email" };
     });
   } catch (error) {
-    console.log("Error in sendResetPasswordEmail action: ", error);
+    console.error("Error in sendResetPasswordEmail action: ", error);
     return { error: "Something went wrong" };
   }
 };

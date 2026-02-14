@@ -19,8 +19,6 @@ export const Notifications = () => {
   const numberOfNotifications =
     data?.pages.flatMap((page) => page.notifications).length || 0;
 
-  // todo: add loading skeletons
-
   return (
     <InfiniteScrollingContainer
       onBottomReached={fetchNextPage}
