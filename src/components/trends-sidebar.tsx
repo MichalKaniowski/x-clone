@@ -1,4 +1,5 @@
 import { validateRequest } from "@/auth";
+import { PostProfilePopover } from "@/features/posts/components/post-profile-popover";
 import { FollowUserButton } from "@/features/profile/components/follow-user-button";
 import { prisma } from "@/lib/prisma";
 import { formatNumber } from "@/lib/utils";
@@ -8,7 +9,6 @@ import { unstable_cache } from "next/cache";
 import Link from "next/link";
 import { Suspense } from "react";
 import { UserAvatar } from "./user-avatar";
-import { UserTooltip } from "./user-tooltip";
 
 const getTrendingTopics = unstable_cache(
   async () => {
@@ -51,25 +51,26 @@ const WhoToFollow = async () => {
     <div className="space-y-5 bg-card shadow-sm p-5 rounded-2xl">
       <p className="font-bold text-xl">Who to follow</p>
       {usersToFollow.map((user) => (
-        <div key={user.id} className="flex justify-between items-center gap-3">
-          <UserTooltip user={user}>
-            <Link
-              href={`users/${user.username}`}
-              className="flex items-center gap-3"
-            >
-              <UserAvatar avatarUrl={user.avatarUrl} className="flex-none" />
-
-              <div>
-                <p className="font-semibold hover:underline break-all line-clamp-1">
-                  {user.displayName}
-                </p>
-                <p className="text-muted-foreground break-all line-clamp-1">
-                  @{user.username}
-                </p>
-              </div>
-            </Link>
-          </UserTooltip>
-          <FollowUserButton user={user} />
+        <div key={user.id} className="flex items-center gap-3">
+          <div>
+            <PostProfilePopover
+              TriggerComponent={
+                <UserAvatar avatarUrl={user.avatarUrl} size={38} />
+              }
+              user={user}
+            />
+          </div>
+          <div className="flex-1 text-left">
+            <p className="font-semibold text-sm hover:underline break-all line-clamp-1">
+              {user.displayName}
+            </p>
+            <p className="text-muted-foreground text-sm break-all line-clamp-1">
+              @{user.username}
+            </p>
+          </div>
+          <div className="flex-2">
+            <FollowUserButton user={user} size="sm" />
+          </div>
         </div>
       ))}
     </div>

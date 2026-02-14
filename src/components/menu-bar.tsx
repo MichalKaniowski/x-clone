@@ -16,7 +16,7 @@ export const MenuBar = () => {
   const pathname = usePathname();
 
   return (
-    <div className="bg-card px-3 py-2 rounded-xl">
+    <div className="bg-card px-3 py-2 rounded-xl top-[5.25rem] sticky h-fit">
       {MENU_BAR_ITEMS.map((item) => {
         if (item.name !== "Notifications") {
           return (
@@ -25,7 +25,7 @@ export const MenuBar = () => {
               href={item.href}
               className={cn(
                 "flex items-center gap-3 hover:opacity-70 p-3 rounded-xl",
-                pathname === item.href && "bg-foreground/5"
+                pathname === item.href && "bg-foreground/5",
               )}
             >
               {item.icon}

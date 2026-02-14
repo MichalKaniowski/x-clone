@@ -9,9 +9,13 @@ import { useFollowUser } from "../hooks/use-follow-user";
 
 interface FollowUserButtonProps {
   user: UserData;
+  size?: "sm" | "md";
 }
 
-export const FollowUserButton = ({ user }: FollowUserButtonProps) => {
+export const FollowUserButton = ({
+  user,
+  size = "md",
+}: FollowUserButtonProps) => {
   const [isAnimating, setIsAnimating] = useState(false);
 
   const {
@@ -33,10 +37,10 @@ export const FollowUserButton = ({ user }: FollowUserButtonProps) => {
   return (
     <Button
       onClick={handleClick}
-      className={`relative w-32 transition-colors duration-200 ${
+      className={`relative ${size === "sm" ? "h-7" : "w-32"}  transition-colors duration-200 ${
         isFollowedByUser
-          ? "bg-background/90 text-foreground hover:bg-background/60"
-          : "bg-foreground/90 text-background hover:bg-foreground/70"
+          ? "bg-background/85 text-foreground hover:bg-background/80"
+          : "bg-foreground/85 text-background hover:bg-foreground/80"
       }`}
     >
       <div className="flex items-center gap-2.5">

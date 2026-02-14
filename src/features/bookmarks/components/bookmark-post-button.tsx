@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 import { BookmarkInfo } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { Bookmark } from "lucide-react";
+import { useTheme } from "next-themes";
 import { bookmarksQueryFactory } from "../bookmarks-query-factory";
 import { useToggleBookmark } from "../hooks/use-toggle-bookmark";
 
@@ -25,8 +26,8 @@ export const BookmarkPostButton = ({
     initialData: bookmarkInfo,
     staleTime: Infinity,
   });
-
   const { mutate: toggleBookmark } = useToggleBookmark(postId);
+  const { theme } = useTheme();
 
   return (
     <button>
@@ -34,6 +35,7 @@ export const BookmarkPostButton = ({
         onClick={() => toggleBookmark(postId)}
         className={cn(bookmarkInfoData.isBookmarkedByUser && "fill-green-500")}
         size={17}
+        color={theme === "dark" ? "white" : "gray"}
       />
     </button>
   );
