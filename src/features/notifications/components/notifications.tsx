@@ -7,9 +7,11 @@ import { useEffect } from "react";
 import { useNotifications } from "../hooks/use-notifications";
 import { useReadNotification } from "../hooks/use-read-notification";
 import { Notification } from "./notification";
+import { NotificationSkeletonLoader } from "./notification-skeleton";
 
 export const Notifications = () => {
-  const { data, fetchNextPage, hasNextPage, isFetching } = useNotifications();
+  const { data, fetchNextPage, hasNextPage, isFetching, isPending } =
+    useNotifications();
   const { mutate: readNotificationsMutate } = useReadNotification();
 
   useEffect(() => {
@@ -18,6 +20,7 @@ export const Notifications = () => {
 
   const numberOfNotifications =
     data?.pages.flatMap((page) => page.notifications).length || 0;
+  const isLoadingInitial = isPending && !data;
 
   return (
     <InfiniteScrollingContainer
@@ -30,9 +33,13 @@ export const Notifications = () => {
             <Notification key={notification.id} notification={notification} />
           ))
         )}
+
+        {isLoadingInitial && <NotificationSkeletonLoader />}
       </div>
       <div className="mt-8">
-        {isFetching && <Loader2 className="mx-auto animate-spin" />}
+        {isFetching && !isLoadingInitial && (
+          <Loader2 className="mx-auto animate-spin" />
+        )}
         {!isFetching && !hasNextPage && (
           <>
             {numberOfNotifications > 0 ? (

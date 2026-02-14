@@ -2,6 +2,7 @@
 
 import { InfiniteScrollingContainer } from "@/components/infinite-scrolling-container";
 import { Post } from "@/features/posts/components/post";
+import { PostSkeletonLoader } from "@/features/posts/components/post-skeleton";
 import { kyInstance } from "@/lib/ky";
 import { PostData, PostsPage } from "@/types";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -12,23 +13,25 @@ interface SearchResultsProps {
 }
 
 export const SearchResults = ({ query }: SearchResultsProps) => {
-  const { data, fetchNextPage, hasNextPage, isFetching } = useInfiniteQuery({
-    queryKey: ["post-feed", "search", query],
-    queryFn: ({ pageParam }) =>
-      kyInstance
-        .get("/api/search", {
-          searchParams: {
-            q: query,
-            ...(pageParam ? { cursor: pageParam } : {}),
-          },
-        })
-        .json<PostsPage>(),
-    initialPageParam: null as string | null,
-    getNextPageParam: (lastPage) => lastPage.nextCursor,
-    gcTime: 0,
-  });
+  const { data, fetchNextPage, hasNextPage, isFetching, isPending } =
+    useInfiniteQuery({
+      queryKey: ["post-feed", "search", query],
+      queryFn: ({ pageParam }) =>
+        kyInstance
+          .get("/api/search", {
+            searchParams: {
+              q: query,
+              ...(pageParam ? { cursor: pageParam } : {}),
+            },
+          })
+          .json<PostsPage>(),
+      initialPageParam: null as string | null,
+      getNextPageParam: (lastPage) => lastPage.nextCursor,
+      gcTime: 0,
+    });
 
   const numberOfPosts = data?.pages.flatMap((page) => page.posts).length || 0;
+  const isLoadingInitial = isPending && !data;
 
   return (
     <InfiniteScrollingContainer
@@ -39,9 +42,13 @@ export const SearchResults = ({ query }: SearchResultsProps) => {
         {data?.pages.map((page) =>
           page.posts.map((post: PostData) => <Post key={post.id} post={post} />)
         )}
+
+        {isLoadingInitial && <PostSkeletonLoader />}
       </div>
       <div className="mt-8">
-        {isFetching && <Loader2 className="mx-auto animate-spin" />}
+        {isFetching && !isLoadingInitial && (
+          <Loader2 className="mx-auto animate-spin" />
+        )}
         {!isFetching && !hasNextPage && (
           <>
             {numberOfPosts > 0 ? (

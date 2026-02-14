@@ -17,17 +17,17 @@ export const Notification = ({ notification }: NotificationProps) => {
     FOLLOW: {
       message: `${notification.issuer.displayName} followed you`,
       icon: <User2 className="size-7 text-primary" />,
-      href: `/users/${notification.issuer.username}`,
+      href: `/profile/${notification.issuer.username}`,
     },
     COMMENT: {
       message: `${notification.issuer.displayName} commented on your post`,
       icon: <MessageCircle className="fill-primary size-7 text-primary" />,
-      href: `/posts/${notification.postId}`,
+      href: `/post/${notification.postId}`,
     },
     LIKE: {
       message: `${notification.issuer.displayName} liked your post`,
       icon: <Heart className="fill-red-500 size-7 text-red-500" />,
-      href: `/posts/${notification.postId}`,
+      href: `/post/${notification.postId}`,
     },
   };
 
@@ -38,7 +38,7 @@ export const Notification = ({ notification }: NotificationProps) => {
       <article
         className={cn(
           "flex gap-3 bg-card hover:bg-card/70 shadow-sm p-5 rounded-2xl transition-colors",
-          !notification.read && "bg-primary/10",
+          !notification.read && "bg-primary/10"
         )}
       >
         <div className="my-1">{icon}</div>

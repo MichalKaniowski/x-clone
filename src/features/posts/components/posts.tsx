@@ -5,14 +5,17 @@ import { Feed, PostData } from "@/types";
 import { Loader2 } from "lucide-react";
 import { usePosts } from "../hooks/use-posts";
 import { Post } from "./post";
+import { PostSkeletonLoader } from "./post-skeleton";
 
 interface PostsProps {
   feed: Feed;
 }
 
 export const Posts = ({ feed }: PostsProps) => {
-  const { data, fetchNextPage, hasNextPage, isFetching } = usePosts(feed);
+  const { data, fetchNextPage, hasNextPage, isFetching, isPending } =
+    usePosts(feed);
   const numberOfPosts = data?.pages.flatMap((page) => page.posts).length || 0;
+  const isLoadingInitial = isPending && !data;
 
   return (
     <InfiniteScrollingContainer
@@ -23,9 +26,13 @@ export const Posts = ({ feed }: PostsProps) => {
         {data?.pages.map((page) =>
           page.posts.map((post: PostData) => <Post key={post.id} post={post} />)
         )}
+
+        {isLoadingInitial && <PostSkeletonLoader />}
       </div>
       <div className="mt-8">
-        {isFetching && <Loader2 className="mx-auto animate-spin" />}
+        {isFetching && !isLoadingInitial && (
+          <Loader2 className="mx-auto animate-spin" />
+        )}
         {!isFetching && !hasNextPage && (
           <>
             {numberOfPosts > 0 ? (
