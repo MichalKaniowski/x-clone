@@ -20,19 +20,23 @@ export default async function MainLayout({
   return (
     <ReactQueryProvider>
       <SessionProvider value={session}>
-        <Navbar />
-        <div className="mx-auto px-3 py-4 max-w-7xl">
-          <div className="flex gap-4 w-full">
-            <div className="hidden md:block flex-1">
-              <MenuBar />
-            </div>
+        <div className="flex flex-col h-screen overflow-hidden">
+          <Navbar />
+          <main className="flex-1 overflow-y-auto">
+            <div className="mx-auto px-3 pt-4 pb-6 max-w-7xl">
+              <div className="flex gap-4 w-full">
+                <div className="hidden md:block flex-1">
+                  <MenuBar />
+                </div>
 
-            <div className="flex-[2]">{children}</div>
+                <div className="flex-[2]">{children}</div>
 
-            <div className="hidden lg:block flex-1">
-              <TrendsSidebar />
+                <div className="hidden lg:block flex-1">
+                  <TrendsSidebar />
+                </div>
+              </div>
             </div>
-          </div>
+          </main>
         </div>
       </SessionProvider>
     </ReactQueryProvider>

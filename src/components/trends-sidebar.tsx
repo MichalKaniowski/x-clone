@@ -108,7 +108,7 @@ const TrendingTopics = async () => {
 
 export const TrendsSidebar = () => {
   return (
-    <div className="hidden md:block top-[5.25rem] sticky space-y-3 w-72 lg:w-80 h-fit">
+    <div className="hidden md:block top-4 sticky space-y-3 w-72 lg:w-80 h-fit">
       <Suspense fallback={<Loader2 className="mx-auto animate-spin" />}>
         <WhoToFollow />
         <TrendingTopics />

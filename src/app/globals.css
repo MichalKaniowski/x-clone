@@ -74,6 +74,10 @@ body {
   * {
     @apply border-border;
   }
+  html,
+  body {
+    @apply h-screen overflow-hidden;
+  }
   body {
     @apply bg-background text-foreground;
   }
