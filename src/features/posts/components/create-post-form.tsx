@@ -208,7 +208,7 @@ export const CreatePostForm = () => {
             removeAttachment={removeAttachment}
           />
         )}
-        <div className="flex justify-end">
+        <div className="flex justify-end items-center gap-1">
           {isUploading && (
             <>
               <span className="text-sm">{uploadProgress ?? 0}%</span>
