@@ -172,66 +172,70 @@ export const CreatePostForm = () => {
 
   return (
     <Form {...form}>
-      <form
-        {...rootProps}
-        onSubmit={form.handleSubmit((data) => {
-          const mediaIds = attachments
-            .map((a) => a.mediaId)
-            .filter(Boolean) as string[];
-          onSubmit({ ...data, mediaIds });
-        })}
+      <div
         className={cn(
           "bg-card p-4 rounded-xl",
           isDragActive && "border-dashed border border-primary"
         )}
+        {...rootProps}
       >
-        <input {...getInputProps()} />
-        <div className="flex items-start gap-3 mb-5 w-full">
-          <UserAvatar avatarUrl={user.avatarUrl} size={34} />
-          <FormField
-            control={form.control}
-            name="content"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormControl>
-                  <AutoResizeTextarea {...field} />
-                </FormControl>
+        <form
+          onSubmit={form.handleSubmit((data) => {
+            const mediaIds = attachments
+              .map((a) => a.mediaId)
+              .filter(Boolean) as string[];
+            onSubmit({ ...data, mediaIds });
+          })}
+        >
+          <input {...getInputProps()} />
+          <div className="flex items-start gap-3 mb-5 w-full">
+            <UserAvatar avatarUrl={user.avatarUrl} size={34} />
+            <FormField
+              control={form.control}
+              name="content"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormControl>
+                    <AutoResizeTextarea {...field} />
+                  </FormControl>
 
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-        {!!attachments.length && (
-          <AttachmentsPreview
-            attachments={attachments}
-            removeAttachment={removeAttachment}
-          />
-        )}
-        <div className="flex justify-end items-center gap-1">
-          {isUploading && (
-            <>
-              <span className="text-sm">{uploadProgress ?? 0}%</span>
-              <Loader2 className="size-5 text-primary animate-spin" />
-            </>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          {!!attachments.length && (
+            <AttachmentsPreview
+              attachments={attachments}
+              removeAttachment={removeAttachment}
+            />
           )}
-          <AddAttachmentsButton
-            onFilesSelected={startUpload}
-            disabled={isUploading || attachments.length >= 5}
-          />
-          <LoadingButton
-            loading={isPending}
-            type="submit"
-            className="px-5 rounded-xl"
-            disabled={
-              (!form.getValues().content.trim() && attachments.length === 0) ||
-              isUploading
-            }
-          >
-            {isPending ? "Posting..." : "Post"}
-          </LoadingButton>
-        </div>
-      </form>
+          <div className="flex justify-end items-center gap-1">
+            {isUploading && (
+              <>
+                <span className="text-sm">{uploadProgress ?? 0}%</span>
+                <Loader2 className="size-5 text-primary animate-spin" />
+              </>
+            )}
+            <AddAttachmentsButton
+              onFilesSelected={startUpload}
+              disabled={isUploading || attachments.length >= 5}
+            />
+            <LoadingButton
+              loading={isPending}
+              type="submit"
+              className="px-5 rounded-xl"
+              disabled={
+                (!form.getValues().content.trim() &&
+                  attachments.length === 0) ||
+                isUploading
+              }
+            >
+              {isPending ? "Posting..." : "Post"}
+            </LoadingButton>
+          </div>
+        </form>
+      </div>
     </Form>
   );
 };

@@ -30,7 +30,7 @@ export const AutoResizeTextarea = forwardRef<
         {...props}
         ref={ref}
         onChange={handleChange}
-        className="p-3 border focus:border-transparent rounded-md focus:ring-2 focus:ring-blue-500 w-full min-h-[70px] focus:outline-none resize-none"
+        className="p-3 border focus:border-transparent rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-full min-h-[70px] resize-none"
         placeholder="Type something..."
       />
     </div>

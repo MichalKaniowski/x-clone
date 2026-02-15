@@ -7,7 +7,7 @@ const PAGE_SIZE = 5;
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { postId: string } }
+  { params }: { params: Promise<{ postId: string }> }
 ) {
   try {
     const { user } = await validateRequest();

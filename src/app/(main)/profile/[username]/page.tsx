@@ -1,10 +1,10 @@
 import { validateRequest } from "@/auth";
 import { Card } from "@/components/ui/primitives/card";
 import { UserAvatar } from "@/components/user-avatar";
-import { UpdateProfileDialog } from "@/features/profile/components/update-profile/update-profile-dialog";
 import { FollowUserButton } from "@/features/profile/components/follow-user-button";
 import { ProfilePosts } from "@/features/profile/components/profile-posts";
 import { ProfileStats } from "@/features/profile/components/profile-stats";
+import { UpdateProfileDialog } from "@/features/profile/components/update-profile/update-profile-dialog";
 import { prisma } from "@/lib/prisma";
 import { getUserDataSelect } from "@/types";
 import Image from "next/image";
@@ -42,7 +42,7 @@ export const generateMetadata = async ({
 export default async function ProfilePage({
   params,
 }: {
-  params: { username: string };
+  params: Promise<{ username: string }>;
 }) {
   const { user: loggedInUser } = await validateRequest();
   if (!loggedInUser) redirect("/login");

@@ -5,12 +5,13 @@ import { NextRequest } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  { params: { postId } }: { params: { postId: string } },
+  { params }: { params: Promise<{ postId: string }> }
 ) {
   try {
     const { user } = await validateRequest();
     if (!user) return Response.json({ error: "Unauthorized" }, { status: 401 });
 
+    const postId = (await params).postId;
     const bookmark = await prisma.bookmark.findFirst({
       where: {
         userId: user.id,

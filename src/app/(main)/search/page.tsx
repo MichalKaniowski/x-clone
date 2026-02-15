@@ -2,7 +2,7 @@ import { SearchResults } from "@/components/search-results";
 import { Card, CardHeader, CardTitle } from "@/components/ui/primitives/card";
 
 interface SearchPageProps {
-  searchParams: { q: string };
+  searchParams: Promise<{ q: string }>;
 }
 
 export const generateMetadata = async ({ searchParams }: SearchPageProps) => {
