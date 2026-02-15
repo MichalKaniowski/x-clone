@@ -2,23 +2,20 @@
 
 import { validateRequest } from "@/auth";
 import { prisma } from "@/lib/prisma";
-import { getPostDataInclude, PostData } from "@/types";
+import { getPostDataInclude } from "@/types";
 import { createPostSchema, CreatePostValues } from "./../validation";
 
-export const createPost = async (data: CreatePostValues): Promise<PostData> => {
+export const createPost = async (data: CreatePostValues) => {
   const { user } = await validateRequest();
   if (!user) throw new Error("Unauthorized");
 
-  const validatedData = createPostSchema.safeParse(data);
-
-  if (!validatedData.success) {
-    throw new Error("Invalid data");
-  }
+  const { content, mediaIds } = createPostSchema.parse(data);
 
   const createdPost = await prisma.post.create({
     data: {
       userId: user.id,
-      content: validatedData.data.content,
+      content,
+      attachments: { connect: mediaIds.map((id) => ({ id })) },
     },
     include: getPostDataInclude(user.id),
   });

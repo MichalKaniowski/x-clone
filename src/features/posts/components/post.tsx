@@ -19,7 +19,9 @@ import { UserAvatar } from "@/components/user-avatar";
 import { BookmarkPostButton } from "@/features/bookmarks/components/bookmark-post-button";
 import { cn, getTimeAgoString } from "@/lib/utils";
 import { PostData } from "@/types";
+import { Media } from "@prisma/client";
 import { Ellipsis, Trash } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { useDeletePost } from "../hooks/use-delete-post";
@@ -27,6 +29,57 @@ import { LikePostButton } from "./like-post-button";
 import { PostComments } from "./post-comments";
 import { PostCommentsButton } from "./post-comments-button";
 import { PostProfilePopover } from "./post-profile-popover";
+
+interface MediaPreviewProps {
+  media: Media;
+}
+
+const MediaPreview = ({ media }: MediaPreviewProps) => {
+  if (media.type === "IMAGE") {
+    return (
+      <Image
+        src={media.url}
+        alt="Attachment"
+        width={500}
+        height={500}
+        className="rounded-2xl max-h-[30rem] size-fit"
+      />
+    );
+  }
+
+  if (media.type === "VIDEO") {
+    return (
+      <div>
+        <video
+          src={media.url}
+          controls
+          className="rounded-2xl max-h-[30rem] size-fit"
+        />
+      </div>
+    );
+  }
+
+  return <p className="text-destructive">Unsupported media type</p>;
+};
+
+interface MediaReviewsProps {
+  attachments: Media[];
+}
+
+const MediaPreviews = ({ attachments }: MediaReviewsProps) => {
+  return (
+    <div
+      className={cn(
+        "flex flex-col flex-wrap gap-3 mt-2",
+        attachments.length > 1 && "sm:grid sm:grid-cols-2"
+      )}
+    >
+      {attachments.map((a) => (
+        <MediaPreview key={a.id} media={a} />
+      ))}
+    </div>
+  );
+};
 
 export const Post = ({
   post,
@@ -87,6 +140,9 @@ export const Post = ({
 
       <CardContent className="text-sm">
         <Linkify>{post.content}</Linkify>
+        {!!post.attachments.length && (
+          <MediaPreviews attachments={post.attachments} />
+        )}
       </CardContent>
 
       <Separator />

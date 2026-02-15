@@ -45,6 +45,7 @@ export const getPostDataInclude = (userId: string) => {
         comments: true,
       },
     },
+    attachments: true,
   } satisfies Prisma.PostInclude;
 };
 
