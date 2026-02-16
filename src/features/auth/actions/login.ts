@@ -3,14 +3,13 @@
 import { lucia } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { verify } from "@node-rs/argon2";
-import { isRedirectError } from "next/dist/client/components/redirect";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { LoginValues, loginSchema } from "../validation";
 
 export const login = async (
   credentials: LoginValues
-): Promise<{ error: string }> => {
+): Promise<{ error: string } | never> => {
   try {
     const { email, password } = loginSchema.parse(credentials);
     const existingUser = await prisma.user.findFirst({
@@ -52,12 +51,12 @@ export const login = async (
       sessionCookie.value,
       sessionCookie.attributes
     );
-    return redirect("/");
   } catch (error) {
-    if (isRedirectError(error)) throw error;
     console.error(error);
     return {
       error: "Something went wrong. Please try again.",
     };
   }
+
+  redirect("/");
 };

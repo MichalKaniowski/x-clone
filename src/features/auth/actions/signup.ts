@@ -3,7 +3,6 @@
 import { lucia } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { generateIdFromEntropySize } from "lucia";
-import { isRedirectError } from "next/dist/client/components/redirect";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { signUpSchema, SignUpValues } from "../validation";
@@ -11,7 +10,7 @@ import { getHashedPassword } from "./get-hashed-password";
 
 export const signUp = async (
   credentials: SignUpValues
-): Promise<{ error: string }> => {
+): Promise<{ error: string } | never> => {
   try {
     const { username, email, password } = signUpSchema.parse(credentials);
 
@@ -65,13 +64,12 @@ export const signUp = async (
       sessionCookie.value,
       sessionCookie.attributes
     );
-
-    return redirect("/");
   } catch (error) {
-    if (isRedirectError(error)) throw error;
     console.error(error);
     return {
       error: "Something went wrong. Please try again.",
     };
   }
+
+  redirect("/");
 };
