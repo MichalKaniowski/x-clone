@@ -8,7 +8,7 @@ This is a full-stack, feature-rich thread based social app inspired by X (former
 
   - Email & password signup and login using Lucia Auth.
   - OAuth 2.0 integration with Google.
-  - Password reset functionality via email (Resend & React Email).
+  - Password reset functionality via email (SendGrid & React Email).
 
 - **Core Social Functionality**:
 
@@ -48,7 +48,7 @@ This is a full-stack, feature-rich thread based social app inspired by X (former
 - **Data Fetching & State**: TanStack Query (React Query)
 - **File Uploads**: UploadThing
 - **Forms**: React Hook Form with Zod for validation
-- **Email**: Resend & React Email
+- **Email**: SendGrid & React Email
 
 ## Getting Started
 
@@ -93,8 +93,8 @@ Follow these instructions to get a local copy up and running.
     UPLOADTHING_TOKEN=""
     UPLOADTHING_SECRET=""
 
-    # Resend API Key (for password reset emails)
-    RESEND_API_KEY=""
+    # SendGrid API Key (for password reset emails)
+    SENDGRID_API_KEY=""
     ```
 
 4.  **Sync your database:**
